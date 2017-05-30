@@ -6,32 +6,9 @@
 //
 //
 
-public enum Category: String {
-    case business = "business"
-    case entertainment = "entertainment"
-    case gaming = "gaming"
-    case general = "general"
-    case music = "music"
-    case politics = "politics"
-    case scienceAndNature = "science-and-nature"
-    case sport = "sport"
-    case technology = "technology"
-}
+import Foundation
 
-public enum Language: String {
-    case english = "en"
-    case deutsch = "de"
-    case french = "fe"
-}
-
-public enum Country: String {
-    case australia = "au"
-    case germany = "de"
-    case unitedKingdom = "gb"
-    case india = "in"
-    case italy = "it"
-    case unitedStates = "us"
-}
+public typealias NewsAPISourcesResult = ([NewsAPISource]?, NewsAPIError?, NewsAPIResponse) -> Void
 
 public enum NewsAPIError: Error {
     
@@ -41,19 +18,51 @@ public enum NewsAPIResponse {
     
 }
 
-public class NewsAPI {
+public protocol NewsAPIProtocol: class {
+    func getSources(category: Category?, language: Language?, country: Country?, completionHandler: @escaping NewsAPISourcesResult)
+}
+
+public class NewsAPI: NewsAPIProtocol {
     
     private let key: String
     
-    private let sourcesEndpoint = "https://newsapi.org/v1/sources"
-    private let articlesEndpoint = "https://newsapi.org/v1/articles"
+    private let sourcesPath = "/v1/sources/"
+    private let articlesPath = "/v1/articles/"
+    private let host = "newsapi.org"    
     
-    init(key: String) {
+    let urlSession: URLSessionProtocol
+    
+    public init(key: String) {
         self.key = key
+        self.urlSession = URLSession.shared
     }
     
-    public func getSources(category: Category? = nil, language: Language? = nil, country: Country? = nil, completionHandler: @escaping ([NewsAPISource]?, NewsAPIError?, NewsAPIResponse) -> Void) {
+    init(key: String, urlSession: URLSessionProtocol) {
+        self.key = key
+        self.urlSession = urlSession
+    }
+    
+    private func buildUrl(path: String, parameters: [String: String?]) -> URL? {
+        var urlComponents = URLComponents()
+        urlComponents.scheme = "https"
+        urlComponents.host = self.host
+        urlComponents.path = path
+        
+        var queryItems = [URLQueryItem]()
+        
+        for (key,value) in parameters {
+            if let value = value {
+                let queryItem = URLQueryItem(name: key, value: value)
+                queryItems.append(queryItem)
+            }
+        }
+        
+        urlComponents.queryItems = queryItems
+        
+        return urlComponents.url
+    }
+    
+    public func getSources(category: Category? = nil, language: Language? = nil, country: Country? = nil, completionHandler: @escaping NewsAPISourcesResult) {
         
     }
-    
 }

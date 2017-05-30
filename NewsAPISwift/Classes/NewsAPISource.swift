@@ -1,5 +1,5 @@
 //
-//  Source.swift
+//  NewsAPISource.swift
 //  Pods
 //
 //  Created by Lucas on 29/05/17.
