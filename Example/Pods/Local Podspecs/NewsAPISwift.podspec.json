@@ -1,0 +1,22 @@
+{
+  "name": "NewsAPISwift",
+  "version": "0.1.0",
+  "summary": "A short description of NewsAPISwift.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/Lucas Lima/NewsAPISwift",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Lucas Lima": "lucaslimapoa2@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/Lucas Lima/NewsAPISwift.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "NewsAPISwift/Classes/**/*"
+}
