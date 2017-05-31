@@ -1,0 +1,16 @@
+PODS:
+  - NewsAPISwift (0.1.0)
+
+DEPENDENCIES:
+  - NewsAPISwift (from `../`)
+
+EXTERNAL SOURCES:
+  NewsAPISwift:
+    :path: ../
+
+SPEC CHECKSUMS:
+  NewsAPISwift: db45c97f088641ad1820957c0b6e42b251eba6fe
+
+PODFILE CHECKSUM: c3d218bf76534d34e50149a60434047a691d8da9
+
+COCOAPODS: 1.2.1
