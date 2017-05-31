@@ -8,18 +8,18 @@
 
 import Foundation
 
-public typealias NewsAPISourcesResult = ([NewsAPISource]?, NewsAPIError?, NewsAPIResponse?) -> Void
+public enum Result<T> {
+    case error(Error)
+    case success(T)
+}
 
 public enum NewsAPIError: Error {
     case invalidUrl
-}
-
-public enum NewsAPIResponse {
-    
+    case statusCode(Int)
 }
 
 public protocol NewsAPIProtocol: class {
-    func getSources(category: Category?, language: Language?, country: Country?, completionHandler: @escaping NewsAPISourcesResult)
+    func getSources(category: Category?, language: Language?, country: Country?, completionHandler: @escaping (Result<[NewsAPISource]>) -> Void)
 }
 
 public class NewsAPI: NewsAPIProtocol {
@@ -52,7 +52,7 @@ public class NewsAPI: NewsAPIProtocol {
         return urlComponents.url
     }
     
-    public func getSources(category: Category? = nil, language: Language? = nil, country: Country? = nil, completionHandler: @escaping NewsAPISourcesResult) {
+    public func getSources(category: Category? = nil, language: Language? = nil, country: Country? = nil, completionHandler: @escaping (Result<[NewsAPISource]>) -> Void) {
         let queryItems = [
             URLQueryItem(name: "category", value: category?.rawValue),
             URLQueryItem(name: "language", value: language?.rawValue),
@@ -60,12 +60,12 @@ public class NewsAPI: NewsAPIProtocol {
         ]
         
         guard let url = buildUrl(path: sourcesPath, parameters: queryItems) else {
-            completionHandler(nil, NewsAPIError.invalidUrl, nil)
+            completionHandler(Result.error(NewsAPIError.invalidUrl))
             return
         }
         
         let dataTask = urlSession.dataTask(with: url) { data, response, error in
-            completionHandler(nil, nil, nil)
+            completionHandler(Result.success([NewsAPISource]()))
         }
         
         dataTask.resume()

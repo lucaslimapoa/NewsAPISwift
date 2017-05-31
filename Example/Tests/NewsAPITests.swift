@@ -34,7 +34,7 @@ class NewsAPITests: XCTestCase {
         
         let expectationTest = expectation(description: "The source parameters must be built into the URL")
         
-        subject.getSources(category: Category.gaming, language: Language.english, country: Country.unitedStates) { _, _, _ in
+        subject.getSources(category: Category.gaming, language: Language.english, country: Country.unitedStates) { _ in
             actualUrl = self.mockURLSession.lastURL
             expectationTest.fulfill()
         }
