@@ -47,7 +47,10 @@ public class NewsAPI: NewsAPIProtocol {
         urlComponents.scheme = "https"
         urlComponents.host = self.host
         urlComponents.path = path
-        urlComponents.queryItems = parameters
+        
+        urlComponents.queryItems = parameters.filter {
+            $0.value != nil
+        }
         
         return urlComponents.url
     }

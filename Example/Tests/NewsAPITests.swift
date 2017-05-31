@@ -29,21 +29,35 @@ class NewsAPITests: XCTestCase {
     }
     
     func test_Get_BuildSourcesUrlWithParameters() {
-        let expectedUrl = URL(string: "https://newsapi.org/v1/sources?category=gaming&language=en&country=us")!
-        var actualUrl: URL?
+        var expectedUrl = URL(string: "https://newsapi.org/v1/sources?category=gaming&language=en&country=us")!
+        var createdUrl = buildUrlWithParameters(category: NewsAPISwift.Category.gaming, language: Language.english, country: Country.unitedStates)
         
-        let expectationTest = expectation(description: "The source parameters must be built into the URL")
+        XCTAssertEqual(expectedUrl, createdUrl!)
         
-        subject.getSources(category: Category.gaming, language: Language.english, country: Country.unitedStates) { _ in
-            actualUrl = self.mockURLSession.lastURL
-            expectationTest.fulfill()
-        }
+        expectedUrl = URL(string: "https://newsapi.org/v1/sources?language=en&country=us")!
+        createdUrl = buildUrlWithParameters(category: nil, language: Language.english, country: Country.unitedStates)
         
-        waitForExpectations(timeout: 1.0, handler: nil)
+        XCTAssertEqual(expectedUrl, createdUrl!)
         
-        XCTAssertEqual(expectedUrl, actualUrl!)
+        expectedUrl = URL(string: "https://newsapi.org/v1/sources?country=us")!
+        createdUrl = buildUrlWithParameters(category: nil, language: nil, country: Country.unitedStates)
+        
+        XCTAssertEqual(expectedUrl, createdUrl!)
     }
     
+    func buildUrlWithParameters(category: NewsAPISwift.Category? = nil, language: NewsAPISwift.Language? = nil, country: NewsAPISwift.Country? = nil) -> URL? {
+        let semaphore = DispatchSemaphore(value: 1)
+        var actualUrl: URL?
+        
+        subject.getSources(category: category, language: language, country: country) { _ in
+            actualUrl = self.mockURLSession.lastURL
+            semaphore.signal()
+        }
+        
+        semaphore.wait()
+        
+        return actualUrl
+    }
 }
 
 extension NewsAPITests {
