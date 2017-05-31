@@ -48,13 +48,26 @@ class NewsAPITests: XCTestCase {
 
 extension NewsAPITests {
     
-    class MockURLSession: URLSession {
+    class MockURLSession: URLSessionProtocol {
         
         private (set) var lastURL: URL?
         
-        override func dataTask(with url: URL, completionHandler: @escaping DataTaskResult) -> URLSessionDataTask {
+        func dataTask(with url: URL, completionHandler: @escaping DataTaskResult) -> URLSessionDataTask {
             self.lastURL = url
-            return URLSession.shared.dataTask(with: url, completionHandler: completionHandler)
+            return MockURLSessionDataTask(completionHandler: completionHandler)
+        }
+    }
+    
+    class MockURLSessionDataTask: URLSessionDataTask {
+        let completionHandler: DataTaskResult
+        
+        init(completionHandler: @escaping DataTaskResult) {
+            self.completionHandler = completionHandler
+            super.init()
+        }
+        
+        override open func resume() {
+            completionHandler(nil, nil, nil)
         }
     }
 }

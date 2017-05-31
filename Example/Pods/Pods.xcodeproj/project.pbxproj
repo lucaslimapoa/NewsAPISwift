@@ -209,10 +209,10 @@
 		B42A88475AF125065DDD918079C34B19 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				CD3D67462961DEE3E7AE29CFD4415C70 /* URLSession */,
 				BFB88CDACFA73CE5AC9327F78B77381C /* NewsAPI.swift */,
 				AC39CA2A4DB068D338925A6D8EA3EF84 /* NewsAPIParameters.swift */,
 				E58BF912281BEC3EF2DB2E26D91EA5EB /* NewsAPISource.swift */,
-				CD3D67462961DEE3E7AE29CFD4415C70 /* URLSession */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
