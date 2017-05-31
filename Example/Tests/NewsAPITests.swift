@@ -21,35 +21,40 @@ class NewsAPITests: XCTestCase {
         self.subject = NewsAPI(key: "test", urlSession: self.mockURLSession)
     }
     
-    func test_Get_BuildsSourcesURL() {
+    func test_Get_URLSessionGetsURL() {
         let expectedUrl = URL(string: "https://newsapi.org/v1/sources?category=gaming&language=en&country=us")!
+        let _ = mockURLSession.dataTask(with: expectedUrl) { _, _, _ in }
         
-        let expectationTest = expectation(description: "The expectedURL should match the built URL by the getSources method.")
-        var actualURL: URL?
+        XCTAssertEqual(expectedUrl, mockURLSession.lastURL)
+    }
+    
+    func test_Get_BuildSourcesUrlWithParameters() {
+        let expectedUrl = URL(string: "https://newsapi.org/v1/sources?category=gaming&language=en&country=us")!
+        var actualUrl: URL?
+        
+        let expectationTest = expectation(description: "The source parameters must be built into the URL")
         
         subject.getSources(category: Category.gaming, language: Language.english, country: Country.unitedStates) { _, _, _ in
-            actualURL = self.mockURLSession.lastURL
+            actualUrl = self.mockURLSession.lastURL
             expectationTest.fulfill()
         }
         
         waitForExpectations(timeout: 1.0, handler: nil)
         
-        XCTAssertNotNil(actualURL)
-        XCTAssertEqual(expectedUrl, actualURL!)
+        XCTAssertEqual(expectedUrl, actualUrl!)
     }
     
 }
 
 extension NewsAPITests {
     
-    class MockURLSession: URLSessionProtocol {
+    class MockURLSession: URLSession {
         
         private (set) var lastURL: URL?
         
-        func dataTask(with url: URL, completionHandler: @escaping DataTaskResult) -> URLSessionDataTask {
+        override func dataTask(with url: URL, completionHandler: @escaping DataTaskResult) -> URLSessionDataTask {
             self.lastURL = url
-            return URLSessionDataTask()
+            return URLSession.shared.dataTask(with: url, completionHandler: completionHandler)
         }
     }
-    
 }

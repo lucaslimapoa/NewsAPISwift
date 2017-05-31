@@ -5,7 +5,10 @@ target 'NewsAPISwift_Example' do
 
   target 'NewsAPISwift_Tests' do
     inherit! :search_paths
-
-    
   end
+
+  target 'NewsAPISwift_ExampleTests' do
+    inherit! :search_paths
+  end
+  
 end

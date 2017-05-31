@@ -1,8 +1,8 @@
 {
   "name": "NewsAPISwift",
   "version": "0.1.0",
-  "summary": "A short description of NewsAPISwift.",
-  "description": "TODO: Add long description of the pod here.",
+  "summary": "NewsAPISwift is a Swift wrapper around NewsAPI.",
+  "description": "NewsAPISwift is a Swift wrapper around NewsAPI. It provides an easy-to-use API capable of requesting articles from more than 70 sources.",
   "homepage": "https://github.com/Lucas Lima/NewsAPISwift",
   "license": {
     "type": "MIT",

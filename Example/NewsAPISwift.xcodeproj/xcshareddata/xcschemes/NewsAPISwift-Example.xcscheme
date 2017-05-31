@@ -43,12 +43,22 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
          <TestableReference
-            skipped = "NO">
+            skipped = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "607FACE41AFB9204008FA782"
                BuildableName = "NewsAPISwift_Tests.xctest"
                BlueprintName = "NewsAPISwift_Tests"
+               ReferencedContainer = "container:NewsAPISwift.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A0C756611EDE37BD009C28B6"
+               BuildableName = "NewsAPISwift_ExampleTests.xctest"
+               BlueprintName = "NewsAPISwift_ExampleTests"
                ReferencedContainer = "container:NewsAPISwift.xcodeproj">
             </BuildableReference>
          </TestableReference>
