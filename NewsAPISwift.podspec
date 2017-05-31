@@ -18,17 +18,17 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-NewsAPISwift is a Swift wrapper around NewsAPI. It provides an easy-to-use API capable of requesting articles from more than 70 sources.
+NewsAPISwift is a Swift wrapper around NewsAPI.org service, which provides articles from more than 70 sources.
                        DESC
 
-  s.homepage         = 'https://github.com/Lucas Lima/NewsAPISwift'
+  s.homepage         = 'https://github.com/lucaslimapoa/NewsAPISwift'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Lucas Lima' => 'lucaslimapoa2@gmail.com' }
-  s.source           = { :git => 'https://github.com/Lucas Lima/NewsAPISwift.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/lucaslimapoa/NewsAPISwift.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '9.0'
+  s.ios.deployment_target = '8.0'
 
   s.source_files = 'NewsAPISwift/Classes/**/*'
   
