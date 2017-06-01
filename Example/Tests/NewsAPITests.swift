@@ -45,6 +45,29 @@ class NewsAPITests: XCTestCase {
         XCTAssertEqual(expectedUrl, createdUrl!)
     }
     
+    func test_Get_Sources_ParsesJSONResponse() {
+        let url = URL(string: "https://newsapi.org/v1/sources?category=gaming&language=en&country=us")!
+        let expectationTest = expectation(description: "The getSources method should parse and deliver a json object.")
+        
+        var errorCode: Error?
+        var jsonObject: [String: Any]?
+        
+        let mockDataTask = mockURLSession.dataTask(with: url) { jsonData, error in
+            errorCode = error
+            jsonObject = jsonData
+            
+            expectationTest.fulfill()
+        } as! MockURLSessionDataTask
+        
+        mockDataTask.jsonFile = "SourcesJSON"
+        mockDataTask.resume()
+        
+        waitForExpectations(timeout: 5.0, handler: nil)
+        
+        XCTAssertNil(errorCode)
+        XCTAssertNotNil(jsonObject)
+    }
+    
     func buildUrlWithParameters(category: NewsAPISwift.Category? = nil, language: NewsAPISwift.Language? = nil, country: NewsAPISwift.Country? = nil) -> URL? {
         let semaphore = DispatchSemaphore(value: 1)
         var actualUrl: URL?
@@ -74,6 +97,7 @@ extension NewsAPITests {
     
     class MockURLSessionDataTask: URLSessionDataTask {
         let completionHandler: DataTaskResult
+        var jsonFile: String?
         
         init(completionHandler: @escaping DataTaskResult) {
             self.completionHandler = completionHandler
@@ -81,7 +105,16 @@ extension NewsAPITests {
         }
         
         override open func resume() {
-            completionHandler(nil, nil, nil)
+            var fileData: Data?
+            
+            if let jsonFile = jsonFile {
+                let bundle = Bundle(for: type(of: self))
+                let filePath = bundle.path(forResource: jsonFile, ofType: "json")!
+                
+                fileData = try! Data(contentsOf: URL(string: "file:///\(filePath)")!)
+            }
+            
+            completionHandler(fileData, nil, nil)
         }
     }
 }

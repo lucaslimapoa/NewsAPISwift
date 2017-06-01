@@ -15,6 +15,7 @@ public enum Result<T> {
 
 public enum NewsAPIError: Error {
     case invalidUrl
+    case invalidData
     case statusCode(Int)
 }
 
@@ -66,8 +67,8 @@ public class NewsAPI: NewsAPIProtocol {
             completionHandler(Result.error(NewsAPIError.invalidUrl))
             return
         }
-        
-        let dataTask = urlSession.dataTask(with: url) { data, response, error in
+
+        let dataTask = urlSession.dataTask(with: url) { jsonData, error in
             completionHandler(Result.success([NewsAPISource]()))
         }
         
