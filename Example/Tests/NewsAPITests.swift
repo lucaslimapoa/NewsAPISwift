@@ -47,25 +47,16 @@ class NewsAPITests: XCTestCase {
     
     func test_Get_Sources_ParsesJSONResponse() {
         let url = URL(string: "https://newsapi.org/v1/sources?category=gaming&language=en&country=us")!
-        let expectationTest = expectation(description: "The getSources method should parse and deliver a json object.")
-        
-        var errorCode: Error?
-        var jsonObject: [String: Any]?
-        
-        let mockDataTask = mockURLSession.dataTask(with: url) { jsonData, error in
-            errorCode = error
-            jsonObject = jsonData
-            
-            expectationTest.fulfill()
-        } as! MockURLSessionDataTask
-        
-        mockDataTask.jsonFile = "SourcesJSON"
-        mockDataTask.resume()
-        
-        waitForExpectations(timeout: 5.0, handler: nil)
+       
+        var (jsonObject, errorCode) = parseJSONResponse(url: url, jsonFile: "SourcesJSON")
         
         XCTAssertNil(errorCode)
         XCTAssertNotNil(jsonObject)
+        
+        (jsonObject, errorCode) = parseJSONResponse(url: url, jsonFile: "InvalidJSON")
+        
+        XCTAssertNil(jsonObject)
+        XCTAssertNotNil(errorCode)
     }
     
     func buildUrlWithParameters(category: NewsAPISwift.Category? = nil, language: NewsAPISwift.Language? = nil, country: NewsAPISwift.Country? = nil) -> URL? {
@@ -80,6 +71,27 @@ class NewsAPITests: XCTestCase {
         semaphore.wait()
         
         return actualUrl
+    }
+    
+    func parseJSONResponse(url: URL, jsonFile: String) -> ([String: Any]?, Error?) {
+        var errorCode: Error?
+        var jsonObject: [String: Any]?
+        
+        let semaphore = DispatchSemaphore(value: 1)
+        
+        let mockDataTask = mockURLSession.dataTask(with: url) { jsonData, error in
+            errorCode = error
+            jsonObject = jsonData
+            
+            semaphore.signal()
+        } as! MockURLSessionDataTask
+        
+        mockDataTask.jsonFile = jsonFile
+        mockDataTask.resume()
+        
+        semaphore.wait()
+        
+        return (jsonObject, errorCode)
     }
 }
 

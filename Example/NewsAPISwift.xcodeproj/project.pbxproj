@@ -16,6 +16,8 @@
 		83AF0FBD730C2CAA2C27EBAB /* Pods_NewsAPISwift_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81A273488111D07D00F0866E /* Pods_NewsAPISwift_Example.framework */; };
 		A0361B0F1EDFA09C0072E13E /* SourcesJSON.json in Resources */ = {isa = PBXBuildFile; fileRef = A0361B0E1EDFA09C0072E13E /* SourcesJSON.json */; };
 		A0361B111EDFA6390072E13E /* SourcesJSON.json in Resources */ = {isa = PBXBuildFile; fileRef = A0361B0E1EDFA09C0072E13E /* SourcesJSON.json */; };
+		A0361B131EDFA9C40072E13E /* InvalidJSON.json in Resources */ = {isa = PBXBuildFile; fileRef = A0361B121EDFA9C40072E13E /* InvalidJSON.json */; };
+		A0361B141EDFA9CA0072E13E /* InvalidJSON.json in Resources */ = {isa = PBXBuildFile; fileRef = A0361B121EDFA9C40072E13E /* InvalidJSON.json */; };
 		A0C756701EDE385C009C28B6 /* NewsAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05EDEB61EDE283A00496266 /* NewsAPITests.swift */; };
 		BDBA6BDA4B99EC8416DDDBA1 /* Pods_NewsAPISwift_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3CE5566C4BAFFE4B5B146FE /* Pods_NewsAPISwift_Tests.framework */; };
 /* End PBXBuildFile section */
@@ -56,6 +58,7 @@
 		81A273488111D07D00F0866E /* Pods_NewsAPISwift_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NewsAPISwift_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		88C8FB11E9BA33E4CC2949F3 /* NewsAPISwift.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = NewsAPISwift.podspec; path = ../NewsAPISwift.podspec; sourceTree = "<group>"; };
 		A0361B0E1EDFA09C0072E13E /* SourcesJSON.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SourcesJSON.json; sourceTree = "<group>"; };
+		A0361B121EDFA9C40072E13E /* InvalidJSON.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = InvalidJSON.json; sourceTree = "<group>"; };
 		A05EDEB61EDE283A00496266 /* NewsAPITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsAPITests.swift; sourceTree = "<group>"; };
 		A0C756621EDE37BD009C28B6 /* NewsAPISwift_ExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NewsAPISwift_ExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0C756661EDE37BD009C28B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -179,6 +182,7 @@
 		A0361B101EDFA09F0072E13E /* Mock JSON */ = {
 			isa = PBXGroup;
 			children = (
+				A0361B121EDFA9C40072E13E /* InvalidJSON.json */,
 				A0361B0E1EDFA09C0072E13E /* SourcesJSON.json */,
 			);
 			name = "Mock JSON";
@@ -324,6 +328,7 @@
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				A0361B0F1EDFA09C0072E13E /* SourcesJSON.json in Resources */,
+				A0361B131EDFA9C40072E13E /* InvalidJSON.json in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -339,6 +344,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0361B141EDFA9CA0072E13E /* InvalidJSON.json in Resources */,
 				A0361B111EDFA6390072E13E /* SourcesJSON.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
