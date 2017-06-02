@@ -1,5 +1,7 @@
 PODS:
-  - NewsAPISwift (0.1.0)
+  - NewsAPISwift (0.1.0):
+    - ObjectMapper (~> 2.2)
+  - ObjectMapper (2.2.7)
 
 DEPENDENCIES:
   - NewsAPISwift (from `../`)
@@ -9,7 +11,8 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  NewsAPISwift: db45c97f088641ad1820957c0b6e42b251eba6fe
+  NewsAPISwift: 05d98fa001e39b8a76980299f88c51157ed7b327
+  ObjectMapper: 65abcfd9a61cf7396cbd14a4fb22fddfcc46577e
 
 PODFILE CHECKSUM: c3d218bf76534d34e50149a60434047a691d8da9
 

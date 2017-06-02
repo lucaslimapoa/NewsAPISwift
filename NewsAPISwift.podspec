@@ -39,4 +39,5 @@ NewsAPISwift is a Swift wrapper around NewsAPI.org service, which provides artic
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
   # s.dependency 'AFNetworking', '~> 2.3'
+  s.dependency 'ObjectMapper', '~> 2.2'
 end
