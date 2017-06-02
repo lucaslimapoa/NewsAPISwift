@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import ObjectMapper
 
 public enum Result<T> {
     case error(Error)
@@ -68,10 +69,28 @@ public class NewsAPI: NewsAPIProtocol {
             return
         }
 
-        let dataTask = urlSession.dataTask(with: url) { jsonData, error in
-            completionHandler(Result.success([NewsAPISource]()))
-        }
-        
-        dataTask.resume()
+        urlSession.dataTask(with: url) { jsonData, error in
+            if let error = error {
+                completionHandler(Result.error(error))
+                return
+            }
+            
+            guard let jsonDictionary = jsonData else {
+                completionHandler(Result.error(NewsAPIError.invalidData))
+                return
+            }
+            
+            guard let sourcesDictionary = jsonDictionary["sources"] as? [[String: Any]] else {
+                completionHandler(Result.error(NewsAPIError.invalidData))
+                return
+            }
+            
+            do {
+                let sources: [NewsAPISource] = try Mapper<NewsAPISource>().mapArray(JSONArray: sourcesDictionary)
+                completionHandler(Result.success(sources))
+            } catch {
+                completionHandler(Result.error(NewsAPIError.invalidData))
+            }
+        }.resume()
     }
 }
