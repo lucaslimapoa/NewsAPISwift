@@ -59,6 +59,44 @@ class NewsAPITests: XCTestCase {
         XCTAssertNotNil(errorCode)
     }
     
+    func test_Get_SourcesList() {
+        let expectationTest = expectation(description: "The getSources method should return a list of sources")
+        
+        self.mockURLSession.jsonFile = "SourcesJSON"
+        
+        let ignSource = createIgnSource()
+        let polygonSource = createPolygonSource()
+        var actualSources: [NewsAPISource]?
+        var actualError: Error?
+        
+        subject.getSources { result in
+            switch result {
+            case .success(let sources):
+                actualSources = sources
+            case .error(let error):
+                actualError = error
+            }
+            
+            expectationTest.fulfill()
+        }
+        
+        waitForExpectations(timeout: 1.0, handler: nil)
+
+        XCTAssertNil(actualError)
+        
+        guard let sources = actualSources else {
+            XCTFail("sources is nil")
+            return
+        }
+        
+        if sources.count > 0 {
+            XCTAssertEqual(ignSource, actualSources?[0])
+            XCTAssertEqual(polygonSource, actualSources?[1])
+        } else {
+            XCTFail("No sources in array")
+        }
+    }
+    
     func buildUrlWithParameters(category: NewsAPISwift.Category? = nil, language: NewsAPISwift.Language? = nil, country: NewsAPISwift.Country? = nil) -> URL? {
         let semaphore = DispatchSemaphore(value: 1)
         var actualUrl: URL?
@@ -93,6 +131,28 @@ class NewsAPITests: XCTestCase {
         
         return (jsonObject, errorCode)
     }
+    
+    func createIgnSource() -> NewsAPISource {
+        return NewsAPISource(id: "ign",
+                             name: "IGN",
+                             sourceDescription: "IGN is your site for Xbox One, PS4, PC, Wii-U, Xbox 360, PS3, Wii, 3DS, PS Vita and iPhone games with expert reviews, news, previews, trailers, cheat codes, wiki guides and walkthroughs.",
+                             url: "http://www.ign.com",
+                             category: "gaming",
+                             language: "en",
+                             country: "us",
+                             sortsByAvailable: ["top", "latest"])
+    }
+    
+    func createPolygonSource() -> NewsAPISource {
+        return NewsAPISource(id: "polygon",
+                             name: "Polygon",
+                             sourceDescription: "Polygon is a gaming website in partnership with Vox Media. Our culture focused site covers games, their creators, the fans, trending stories and entertainment news.",
+                             url: "http://www.polygon.com",
+                             category: "gaming",
+                             language: "en",
+                             country: "us",
+                             sortsByAvailable: ["top"])
+    }
 }
 
 extension NewsAPITests {
@@ -100,10 +160,15 @@ extension NewsAPITests {
     class MockURLSession: URLSessionProtocol {
         
         private (set) var lastURL: URL?
+        var jsonFile: String?
         
         func dataTask(with url: URL, completionHandler: @escaping DataTaskResult) -> URLSessionDataTask {
             self.lastURL = url
-            return MockURLSessionDataTask(completionHandler: completionHandler)
+            
+            let dataTask = MockURLSessionDataTask(jsonFile: jsonFile, completionHandler: completionHandler)
+            dataTask.jsonFile = jsonFile
+            
+            return dataTask
         }
     }
     
@@ -111,8 +176,10 @@ extension NewsAPITests {
         let completionHandler: DataTaskResult
         var jsonFile: String?
         
-        init(completionHandler: @escaping DataTaskResult) {
+        init(jsonFile: String? = nil, completionHandler: @escaping DataTaskResult) {
             self.completionHandler = completionHandler
+            self.jsonFile = jsonFile
+            
             super.init()
         }
         
