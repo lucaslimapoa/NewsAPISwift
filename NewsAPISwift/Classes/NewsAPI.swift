@@ -9,17 +9,6 @@
 import Foundation
 import ObjectMapper
 
-public enum Result<T> {
-    case error(Error)
-    case success(T)
-}
-
-public enum NewsAPIError: Error {
-    case invalidUrl
-    case invalidData
-    case statusCode(Int)
-}
-
 public protocol NewsAPIProtocol: class {
     func getSources(category: Category?, language: Language?, country: Country?, completionHandler: @escaping (Result<[NewsAPISource]>) -> Void)
 }
@@ -32,7 +21,7 @@ public class NewsAPI: NewsAPIProtocol {
     private let articlesPath = "/v1/articles"
     private let host = "newsapi.org"    
     
-    let urlSession: URLSessionProtocol
+    private let urlSession: URLSessionProtocol
     
     public init(key: String) {
         self.key = key

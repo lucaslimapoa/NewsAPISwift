@@ -137,10 +137,10 @@ class NewsAPITests: XCTestCase {
                              name: "IGN",
                              sourceDescription: "IGN is your site for Xbox One, PS4, PC, Wii-U, Xbox 360, PS3, Wii, 3DS, PS Vita and iPhone games with expert reviews, news, previews, trailers, cheat codes, wiki guides and walkthroughs.",
                              url: "http://www.ign.com",
-                             category: "gaming",
-                             language: "en",
-                             country: "us",
-                             sortsByAvailable: ["top", "latest"])
+                             category: Category.gaming,
+                             language: Language.english,
+                             country: Country.unitedStates,
+                             sortBysAvailable: ["top", "latest"])
     }
     
     func createPolygonSource() -> NewsAPISource {
@@ -148,10 +148,10 @@ class NewsAPITests: XCTestCase {
                              name: "Polygon",
                              sourceDescription: "Polygon is a gaming website in partnership with Vox Media. Our culture focused site covers games, their creators, the fans, trending stories and entertainment news.",
                              url: "http://www.polygon.com",
-                             category: "gaming",
-                             language: "en",
-                             country: "us",
-                             sortsByAvailable: ["top"])
+                             category: Category.gaming,
+                             language: Language.english,
+                             country: Country.unitedStates,
+                             sortBysAvailable: ["top"])
     }
 }
 
