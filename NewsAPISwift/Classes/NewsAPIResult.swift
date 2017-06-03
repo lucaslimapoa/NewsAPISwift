@@ -14,5 +14,6 @@ public enum Result<T> {
 public enum NewsAPIError: Error {
     case invalidUrl
     case invalidData
+    case cannotParseData
     case statusCode(Int)
 }

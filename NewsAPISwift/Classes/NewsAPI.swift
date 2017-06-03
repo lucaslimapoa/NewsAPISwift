@@ -64,12 +64,7 @@ public class NewsAPI: NewsAPIProtocol {
                 return
             }
             
-            guard let jsonDictionary = jsonData else {
-                completionHandler(Result.error(NewsAPIError.invalidData))
-                return
-            }
-            
-            guard let sourcesDictionary = jsonDictionary["sources"] as? [[String: Any]] else {
+            guard let sourcesDictionary = jsonData?["sources"] as? [[String: Any]] else {
                 completionHandler(Result.error(NewsAPIError.invalidData))
                 return
             }
@@ -78,7 +73,7 @@ public class NewsAPI: NewsAPIProtocol {
                 let sources: [NewsAPISource] = try Mapper<NewsAPISource>().mapArray(JSONArray: sourcesDictionary)
                 completionHandler(Result.success(sources))
             } catch {
-                completionHandler(Result.error(NewsAPIError.invalidData))
+                completionHandler(Result.error(NewsAPIError.cannotParseData))
             }
         }.resume()
     }
