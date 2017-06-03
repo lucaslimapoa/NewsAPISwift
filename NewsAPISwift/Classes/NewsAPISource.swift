@@ -9,16 +9,16 @@
 import ObjectMapper
 
 public struct NewsAPISource {
-    public let id: String
-    public let name: String
-    public let sourceDescription: String
-    public let url: String
-    public let category: Category
-    public let language: Language
-    public let country: Country
-    public let sortBysAvailable: [String]
+    public let id: String?
+    public let name: String?
+    public let sourceDescription: String?
+    public let url: String?
+    public let category: Category?
+    public let language: Language?
+    public let country: Country?
+    public let sortBysAvailable: [SortBy]
     
-    public init(id: String, name: String, sourceDescription: String, url: String, category: Category, language: Language, country: Country, sortBysAvailable: [String] ) {
+    public init(id: String, name: String, sourceDescription: String, url: String, category: Category, language: Language, country: Country, sortBysAvailable: [SortBy] ) {
         self.id = id
         self.name = name
         self.sourceDescription = sourceDescription
@@ -33,13 +33,19 @@ public struct NewsAPISource {
 extension NewsAPISource: ImmutableMappable {
     public init(map: Map) throws {
         id                  = try map.value("id")
-        name                = try map.value("name")
-        sourceDescription   = try map.value("description")
-        url                 = try map.value("url")
-        category            = try map.value("category")
-        language            = try map.value("language")
-        country             = try map.value("country")
-        sortBysAvailable    = try map.value("sortBysAvailable")    
+        name                = try? map.value("name")
+        sourceDescription   = try? map.value("description")
+        url                 = try? map.value("url")
+        category            = try? map.value("category")
+        language            = try? map.value("language")
+        country             = try? map.value("country")
+        
+        if let sortBys: [String] = try? map.value("sortBysAvailable") {
+            sortBysAvailable = sortBys
+                .flatMap { SortBy(rawValue: $0) }
+        } else {
+            sortBysAvailable = [SortBy]()
+        }
     }
 }
 

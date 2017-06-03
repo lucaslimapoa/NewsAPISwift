@@ -32,3 +32,9 @@ public enum Country: String {
     case italy = "it"
     case unitedStates = "us"
 }
+
+public enum SortBy: String {
+    case top = "top"
+    case latest = "latest"
+    case popular = "popular"
+}

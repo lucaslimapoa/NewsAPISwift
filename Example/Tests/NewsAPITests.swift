@@ -140,7 +140,7 @@ class NewsAPITests: XCTestCase {
                              category: Category.gaming,
                              language: Language.english,
                              country: Country.unitedStates,
-                             sortBysAvailable: ["top", "latest"])
+                             sortBysAvailable: [SortBy.top, SortBy.latest])
     }
     
     func createPolygonSource() -> NewsAPISource {
@@ -151,7 +151,7 @@ class NewsAPITests: XCTestCase {
                              category: Category.gaming,
                              language: Language.english,
                              country: Country.unitedStates,
-                             sortBysAvailable: ["top"])
+                             sortBysAvailable: [SortBy.top])
     }
 }
 
