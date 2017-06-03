@@ -43,6 +43,11 @@ class NewsAPITests: XCTestCase {
         createdUrl = buildUrlWithParameters(category: nil, language: nil, country: Country.unitedStates)
         
         XCTAssertEqual(expectedUrl, createdUrl!)
+        
+        expectedUrl = URL(string: "https://newsapi.org/v1/sources?")!
+        createdUrl = buildUrlWithParameters(category: nil, language: nil, country: nil)
+        
+        XCTAssertEqual(expectedUrl, createdUrl!)
     }
     
     func test_Get_Sources_ParsesJSONResponse() {
@@ -173,6 +178,7 @@ extension NewsAPITests {
     }
     
     class MockURLSessionDataTask: URLSessionDataTask {
+        
         let completionHandler: DataTaskResult
         var jsonFile: String?
         
