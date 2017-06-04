@@ -92,7 +92,23 @@ public class NewsAPI: NewsAPIProtocol {
         }
         
         urlSession.dataTask(with: url) { jsonData, error in
-            completionHandler(Result.error(NewsAPIError.invalidData))
+            if let error = error {
+                completionHandler(Result.error(error))
+                return
+            }
+            
+            guard let articlesDictionary = jsonData?["articles"] as? [[String: Any]] else {
+                completionHandler(Result.error(NewsAPIError.invalidData))
+                return
+            }
+            
+            do {
+                let articles: [NewsAPIArticle] = try Mapper<NewsAPIArticle>().mapArray(JSONArray: articlesDictionary)
+                completionHandler(Result.success(articles))
+            } catch {
+                completionHandler(Result.error(NewsAPIError.cannotParseData))
+            }
+            
         }.resume()
     }
 }

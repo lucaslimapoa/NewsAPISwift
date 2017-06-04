@@ -6,7 +6,7 @@
 //
 //
 
-import Foundation
+import ObjectMapper
 
 public struct NewsAPIArticle {
     public let author: String?
@@ -15,6 +15,17 @@ public struct NewsAPIArticle {
     public let url: URL?
     public let urlToImage: URL?
     public let publishedAt: String?
+}
+
+extension NewsAPIArticle: ImmutableMappable {
+    public init(map: Map) throws {
+        author              = try? map.value("author")
+        title               = try? map.value("title")
+        articleDescription  = try? map.value("description")
+        url                 = try? map.value("url", using: URLTransform())
+        urlToImage          = try? map.value("urlToImage", using: URLTransform())
+        publishedAt         = try? map.value("publishedAt")
+    }
 }
 
 extension NewsAPIArticle: Equatable { }

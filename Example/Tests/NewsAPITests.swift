@@ -142,9 +142,11 @@ class NewsAPITests: XCTestCase {
         
         waitForExpectations(timeout: 1.0, handler: nil)
         
+        XCTAssertNil(actualError)
+        
         if let actualArticles = actualArticles {
             XCTAssertEqual(actualArticles[0], expectedArticles.first)
-            XCTAssertEqual(actualArticles[1], expectedArticles.first)
+            XCTAssertEqual(actualArticles[1], expectedArticles.second)
         } else {
             XCTFail("Expected articles are not the same as actual articles")
         }

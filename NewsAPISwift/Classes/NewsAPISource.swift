@@ -34,7 +34,7 @@ public struct NewsAPISource {
 
 extension NewsAPISource: ImmutableMappable {
     public init(map: Map) throws {
-        id                  = try map.value("id")
+        id                  = try? map.value("id")
         name                = try? map.value("name")
         sourceDescription   = try? map.value("description")
         url                 = try? map.value("url")
