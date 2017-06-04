@@ -1,0 +1,47 @@
+{
+   "status":"ok",
+   "source":"techcrunch",
+   "sortBy":"top",
+   "articles":[
+      {
+         "author":"Darrell Etherington",
+         "title":"Nice phone, Essential, but why is there a hole in the screen?",
+         "description":"Andy Rubin's Essential smartphone has made its splashy, highly saturated debut, and the phone looks like a pretty stunning piece of kit in press images (most..",
+         "url":"https://techcrunch.com/2017/05/30/nice-phone-essential-but-why-is-there-a-hole-in-the-screen/",
+         "urlToImage":"https://tctechcrunch2011.files.wordpress.com/2017/05/essential-phone1.jpg?w=764&h=400&crop=1",
+         "publishedAt":"2017-05-30T12:29:04Z"
+      },
+      {
+         "author":"Romain Dillet",
+         "title":"Apple Music executive Bozoma Saint John could be leaving Apple",
+         "description":"WWDC is right around the corner, but let’s talk about last year’s WWDC for a minute. You may remember that Bozoma Saint John blew everyone away with her..",
+         "url":"https://techcrunch.com/2017/06/03/apple-music-executive-bozoma-saint-john-could-be-leaving-apple/",
+         "urlToImage":"https://tctechcrunch2011.files.wordpress.com/2016/06/0245.jpg?w=764&h=400&crop=1",
+         "publishedAt":"2017-06-03T17:05:20Z"
+      },
+      {
+         "author":"Brian Heater",
+         "title":"What to expect from WWDC 2017",
+         "description":"It's that time of year again. Thousands of developers are set to descend upon the South Bay to get their software on. And the rest of the Apple watching world..",
+         "url":"https://techcrunch.com/2017/06/03/what-to-expect-from-wwdc-2017/",
+         "urlToImage":"https://tctechcrunch2011.files.wordpress.com/2017/06/wwdc-2017-featured.png?w=764&h=400&crop=1",
+         "publishedAt":"2017-06-03T16:52:08Z"
+      },
+      {
+         "author":"Ingrid Lunden",
+         "title":"With Microsoft’s Face Swap, search with Bing for your next morphing muse",
+         "description":"Face-swapping -- taking your image and adjusting it to fit on to a different body, creature or object -- has taken the photo app world by storm, as millions..",
+         "url":"https://techcrunch.com/2017/06/02/with-microsofts-face-swap-search-with-bing-for-your-next-morphing-muse/",
+         "urlToImage":"https://tctechcrunch2011.files.wordpress.com/2017/06/screen-shot-2017-06-02-at-21-59-031.png?w=764&h=400&crop=1",
+         "publishedAt":"2017-06-02T21:02:28Z"
+      },
+      {
+         "author":"Anna Escher",
+         "title":"Weekly Roundup: Elon Musk leaves Trump’s advisory councils, Blue Apron files for IPO",
+         "description":"This week President Trump made the senseless decision to withdraw from the Paris Climate Accord, prompting Elon Musk and Bob Iger to leave the White House..",
+         "url":"https://techcrunch.com/2017/06/02/weekly-roundup-elon-musk-leaves-trumps-advisory-councils-blue-apron-files-for-ipo/",
+         "urlToImage":"https://tctechcrunch2011.files.wordpress.com/2017/06/elon-musk-trump-newsletter.jpg?w=640&h=400&crop=1",
+         "publishedAt":"2017-06-02T18:27:37Z"
+      }
+   ]
+}

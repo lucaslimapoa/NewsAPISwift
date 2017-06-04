@@ -8,8 +8,10 @@
 
 import ObjectMapper
 
+public typealias SourceId = String
+
 public struct NewsAPISource {
-    public let id: String?
+    public let id: SourceId?
     public let name: String?
     public let sourceDescription: String?
     public let url: String?
@@ -18,7 +20,7 @@ public struct NewsAPISource {
     public let country: Country?
     public let sortBysAvailable: [SortBy]
     
-    public init(id: String, name: String, sourceDescription: String, url: String, category: Category, language: Language, country: Country, sortBysAvailable: [SortBy] ) {
+    public init(id: SourceId, name: String, sourceDescription: String, url: String, category: Category, language: Language, country: Country, sortBysAvailable: [SortBy] ) {
         self.id = id
         self.name = name
         self.sourceDescription = sourceDescription

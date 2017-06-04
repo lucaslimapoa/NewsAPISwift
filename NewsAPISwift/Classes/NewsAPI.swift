@@ -38,24 +38,27 @@ public class NewsAPI: NewsAPIProtocol {
         urlComponents.scheme = "https"
         urlComponents.host = self.host
         urlComponents.path = path
-        
-        urlComponents.queryItems = parameters.filter {
-            $0.value != nil
-        }
+        urlComponents.queryItems = parameters
         
         return urlComponents.url
+    }
+    
+    private func buildParametersArray(parameters: (name: String, value: String?)...) -> [URLQueryItem] {
+        var queryItems = [URLQueryItem]()
+        
+        for param in parameters {
+            queryItems.append(URLQueryItem(name: param.name, value: param.value))
+        }
+        
+        return queryItems.filter { $0.value != nil }
     }
     
     /// Requests a list of sources matching the search criteria specified by the Category, Language and Country parameters. 
     /// If no parameters are specified, all sources will be returned.
     public func getSources(category: Category? = nil, language: Language? = nil, country: Country? = nil, completionHandler: @escaping (Result<[NewsAPISource]>) -> Void) {
-        let queryItems = [
-            URLQueryItem(name: "category", value: category?.rawValue),
-            URLQueryItem(name: "language", value: language?.rawValue),
-            URLQueryItem(name: "country", value: country?.rawValue)
-        ]
+        let parameters = buildParametersArray(parameters: ("category", category?.rawValue), ("language", language?.rawValue), ("country", country?.rawValue))
         
-        guard let url = buildUrl(path: sourcesPath, parameters: queryItems) else {
+        guard let url = buildUrl(path: sourcesPath, parameters: parameters) else {
             completionHandler(Result.error(NewsAPIError.invalidUrl))
             return
         }
@@ -77,6 +80,19 @@ public class NewsAPI: NewsAPIProtocol {
             } catch {
                 completionHandler(Result.error(NewsAPIError.cannotParseData))
             }
+        }.resume()
+    }
+    
+    public func getArticles(sourceId: SourceId, sortBy: SortBy? = nil, completionHandler: @escaping (Result<[NewsAPIArticle]>) -> Void) {
+        let parameters = buildParametersArray(parameters: ("apiKey", key), ("source", sourceId), ("sortBy", sortBy?.rawValue))
+        
+        guard let url = buildUrl(path: articlesPath, parameters: parameters) else {
+            completionHandler(Result.error(NewsAPIError.invalidUrl))
+            return
+        }
+        
+        urlSession.dataTask(with: url) { jsonData, error in
+            
         }.resume()
     }
 }
