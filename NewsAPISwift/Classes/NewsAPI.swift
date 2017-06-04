@@ -92,7 +92,7 @@ public class NewsAPI: NewsAPIProtocol {
         }
         
         urlSession.dataTask(with: url) { jsonData, error in
-            
+            completionHandler(Result.error(NewsAPIError.invalidData))
         }.resume()
     }
 }

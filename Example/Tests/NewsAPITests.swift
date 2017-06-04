@@ -18,7 +18,7 @@ class NewsAPITests: XCTestCase {
         super.setUp()
         
         self.mockURLSession = MockURLSession()
-        self.subject = NewsAPI(key: "test", urlSession: self.mockURLSession)
+        self.subject = NewsAPI(key: "3d188ee285764cb196fd491913960a24", urlSession: self.mockURLSession)
     }
     
     func test_Get_URLSessionGetsURL() {
@@ -30,30 +30,48 @@ class NewsAPITests: XCTestCase {
     
     func test_Get_BuildSourcesUrlWithParameters() {
         var expectedUrl = URL(string: "https://newsapi.org/v1/sources?category=gaming&language=en&country=us")!
-        var createdUrl = buildUrlWithParameters(category: NewsAPISwift.Category.gaming, language: Language.english, country: Country.unitedStates)
+        var createdUrl = buildSourceUrlWithParameters(category: NewsAPISwift.Category.gaming, language: Language.english, country: Country.unitedStates)
         
         XCTAssertEqual(expectedUrl, createdUrl!)
         
         expectedUrl = URL(string: "https://newsapi.org/v1/sources?language=en&country=us")!
-        createdUrl = buildUrlWithParameters(category: nil, language: Language.english, country: Country.unitedStates)
+        createdUrl = buildSourceUrlWithParameters(category: nil, language: Language.english, country: Country.unitedStates)
         
         XCTAssertEqual(expectedUrl, createdUrl!)
         
         expectedUrl = URL(string: "https://newsapi.org/v1/sources?country=us")!
-        createdUrl = buildUrlWithParameters(category: nil, language: nil, country: Country.unitedStates)
+        createdUrl = buildSourceUrlWithParameters(category: nil, language: nil, country: Country.unitedStates)
         
         XCTAssertEqual(expectedUrl, createdUrl!)
         
         expectedUrl = URL(string: "https://newsapi.org/v1/sources?")!
-        createdUrl = buildUrlWithParameters(category: nil, language: nil, country: nil)
+        createdUrl = buildSourceUrlWithParameters(category: nil, language: nil, country: nil)
         
         XCTAssertEqual(expectedUrl, createdUrl!)
     }
     
-    func test_Get_Sources_ParsesJSONResponse() {
-        let url = URL(string: "https://newsapi.org/v1/sources?category=gaming&language=en&country=us")!
-       
+    func test_Get_BuildArticlesURL() {
+        var expectedURL = URL(string: "https://newsapi.org/v1/articles?apiKey=3d188ee285764cb196fd491913960a24&source=techcrunch")!
+        var createdURL = buildArticlesUrlWithParameters(sourceId: "techcrunch")
+        
+        XCTAssertEqual(expectedURL, createdURL)
+        
+        expectedURL = URL(string: "https://newsapi.org/v1/articles?apiKey=3d188ee285764cb196fd491913960a24&source=techcrunch&sortBy=top")!
+        createdURL = buildArticlesUrlWithParameters(sourceId: "techcrunch", sortBy: SortBy.top)
+        
+        XCTAssertEqual(expectedURL, createdURL)
+    }
+    
+    func test_Get_ParsesJSONResponse() {
+        var url = URL(string: "https://newsapi.org/v1/sources?category=gaming&language=en&country=us")!
         var (jsonObject, errorCode) = parseJSONResponse(url: url, jsonFile: "SourcesJSON")
+        
+        XCTAssertNil(errorCode)
+        XCTAssertNotNil(jsonObject)
+        
+        
+        url = URL(string: "https://newsapi.org/v1/articles?source=techcrunch&apiKey=3d188ee285764cb196fd491913960a24")!
+        (jsonObject, errorCode) = parseJSONResponse(url: url, jsonFile: "ArticlesJSON")
         
         XCTAssertNil(errorCode)
         XCTAssertNotNil(jsonObject)
@@ -102,11 +120,25 @@ class NewsAPITests: XCTestCase {
         }
     }
     
-    func buildUrlWithParameters(category: NewsAPISwift.Category? = nil, language: NewsAPISwift.Language? = nil, country: NewsAPISwift.Country? = nil) -> URL? {
+    func buildSourceUrlWithParameters(category: NewsAPISwift.Category? = nil, language: NewsAPISwift.Language? = nil, country: NewsAPISwift.Country? = nil) -> URL? {
         let semaphore = DispatchSemaphore(value: 1)
         var actualUrl: URL?
         
         subject.getSources(category: category, language: language, country: country) { _ in
+            actualUrl = self.mockURLSession.lastURL
+            semaphore.signal()
+        }
+        
+        semaphore.wait()
+        
+        return actualUrl
+    }
+    
+    func buildArticlesUrlWithParameters(sourceId: SourceId, sortBy: SortBy? = nil) -> URL? {
+        let semaphore = DispatchSemaphore(value: 1)
+        var actualUrl: URL?
+        
+        subject.getArticles(sourceId: sourceId, sortBy: sortBy) { _ in
             actualUrl = self.mockURLSession.lastURL
             semaphore.signal()
         }
