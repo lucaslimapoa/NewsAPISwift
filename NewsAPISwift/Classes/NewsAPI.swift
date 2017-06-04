@@ -46,6 +46,8 @@ public class NewsAPI: NewsAPIProtocol {
         return urlComponents.url
     }
     
+    /// Requests a list of sources matching the search criteria specified by the Category, Language and Country parameters. 
+    /// If no parameters are specified, all sources will be returned.
     public func getSources(category: Category? = nil, language: Language? = nil, country: Country? = nil, completionHandler: @escaping (Result<[NewsAPISource]>) -> Void) {
         let queryItems = [
             URLQueryItem(name: "category", value: category?.rawValue),
