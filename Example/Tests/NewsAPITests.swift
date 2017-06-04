@@ -120,6 +120,36 @@ class NewsAPITests: XCTestCase {
         }
     }
     
+    func test_Get_ArticleList() {
+        let expectationTest = expectation(description: "Must return a list of articles from the ArticlesJSON.json file")
+        let expectedArticles: (first: NewsAPIArticle, second: NewsAPIArticle) = createMockArticles()
+        
+        var actualArticles: [NewsAPIArticle]?
+        var actualError: Error?
+        
+        mockURLSession.jsonFile = "ArticlesJSON"
+        
+        subject.getArticles(sourceId: "techcrunch") { result in
+            switch result {
+            case .success(let articles):
+                actualArticles = articles
+            case .error(let error):
+                actualError = error
+            }
+            
+            expectationTest.fulfill()
+        }
+        
+        waitForExpectations(timeout: 1.0, handler: nil)
+        
+        if let actualArticles = actualArticles {
+            XCTAssertEqual(actualArticles[0], expectedArticles.first)
+            XCTAssertEqual(actualArticles[1], expectedArticles.first)
+        } else {
+            XCTFail("Expected articles are not the same as actual articles")
+        }
+    }
+    
     func buildSourceUrlWithParameters(category: NewsAPISwift.Category? = nil, language: NewsAPISwift.Language? = nil, country: NewsAPISwift.Country? = nil) -> URL? {
         let semaphore = DispatchSemaphore(value: 1)
         var actualUrl: URL?
@@ -189,6 +219,22 @@ class NewsAPITests: XCTestCase {
                              language: Language.english,
                              country: Country.unitedStates,
                              sortBysAvailable: [SortBy.top])
+    }
+    
+    func createMockArticles() -> (first: NewsAPIArticle, second: NewsAPIArticle) {
+        return (first: NewsAPIArticle(author: "Darrell Etherington",
+                                      title: "Nice phone, Essential, but why is there a hole in the screen?",
+                                      articleDescription: "Andy Rubin's Essential smartphone has made its splashy, highly saturated debut, and the phone looks like a pretty stunning piece of kit in press images (most..",
+                                      url: URL(string: "https://techcrunch.com/2017/05/30/nice-phone-essential-but-why-is-there-a-hole-in-the-screen/")!,
+                                      urlToImage: URL(string: "https://tctechcrunch2011.files.wordpress.com/2017/05/essential-phone1.jpg?w=764&h=400&crop=1")!,
+                                      publishedAt: "2017-05-30T12:29:04Z"),
+                
+                second: NewsAPIArticle(author: "Romain Dillet",
+                                       title: "Apple Music executive Bozoma Saint John could be leaving Apple",
+                                       articleDescription: "WWDC is right around the corner, but let’s talk about last year’s WWDC for a minute. You may remember that Bozoma Saint John blew everyone away with her..",
+                                       url: URL(string: "https://techcrunch.com/2017/06/03/apple-music-executive-bozoma-saint-john-could-be-leaving-apple/")!,
+                                       urlToImage: URL(string: "https://tctechcrunch2011.files.wordpress.com/2016/06/0245.jpg?w=764&h=400&crop=1")!,
+                                       publishedAt: "2017-06-03T17:05:20Z"))
     }
 }
 
