@@ -20,6 +20,7 @@ class ListSourcesViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "NewsAPISwift"
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -34,7 +35,27 @@ class ListSourcesViewController: UITableViewController {
             }
         }
     }
-
+//
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if segue.identifier == "ListArticlesSegue" {
+//            let navigationController = segue.destination as! UINavigationController
+//            
+//            let articlesViewController = navigationController.topViewController as! ListArticlesViewController
+//            articlesViewController.newsAPI = newsAPI
+//            articlesViewController.source = sender as! NewsAPISource
+//        }
+//    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let articlesViewController = UIStoryboard(name: "Main", bundle: nil)
+            .instantiateViewController(withIdentifier: "ListArticlesViewController") as! ListArticlesViewController
+        
+        articlesViewController.newsAPI = newsAPI
+        articlesViewController.source = sources[indexPath.row]
+        
+        navigationController?.pushViewController(articlesViewController, animated: true)
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
