@@ -53,62 +53,45 @@ public class NewsAPI: NewsAPIProtocol {
         return queryItems.filter { $0.value != nil }
     }
     
-    /// Requests a list of sources matching the search criteria specified by the Category, Language and Country parameters. 
-    /// If no parameters are specified, all sources will be returned.
-    public func getSources(category: Category? = nil, language: Language? = nil, country: Country? = nil, completionHandler: @escaping (Result<[NewsAPISource]>) -> Void) {
-        let parameters = buildParametersArray(parameters: ("category", category?.rawValue), ("language", language?.rawValue), ("country", country?.rawValue))
-        
-        guard let url = buildUrl(path: sourcesPath, parameters: parameters) else {
+    private func requestData<T: BaseMappable>(urlParameters: (path: String, parameters: [URLQueryItem]), dataKey: String, completionHandler: @escaping (Result<[T]>) -> Void) {
+        guard let url = buildUrl(path: urlParameters.path, parameters: urlParameters.parameters) else {
             completionHandler(Result.error(NewsAPIError.invalidUrl))
             return
         }
-
+        
         urlSession.dataTask(with: url) { jsonData, error in
             if let error = error {
                 completionHandler(Result.error(error))
                 return
             }
             
-            guard let sourcesDictionary = jsonData?["sources"] as? [[String: Any]] else {
+            guard let dataDictionary = jsonData?[dataKey] as? [[String: Any]] else {
                 completionHandler(Result.error(NewsAPIError.invalidData))
                 return
             }
             
-            do {
-                let sources: [NewsAPISource] = try Mapper<NewsAPISource>().mapArray(JSONArray: sourcesDictionary)
-                completionHandler(Result.success(sources))
-            } catch {
+            let requestedData: [T] = Mapper<T>().mapArray(JSONArray: dataDictionary)
+            
+            if requestedData.count > 0 {
+                completionHandler(Result.success(requestedData))
+            } else {
                 completionHandler(Result.error(NewsAPIError.cannotParseData))
             }
+        
         }.resume()
     }
     
+    /// Requests a list of sources matching the search criteria specified by the Category, Language and Country parameters.
+    /// If no parameters are specified, all sources will be returned.
+    public func getSources(category: Category? = nil, language: Language? = nil, country: Country? = nil, completionHandler: @escaping (Result<[NewsAPISource]>) -> Void) {
+        let parameters = buildParametersArray(parameters: ("category", category?.rawValue), ("language", language?.rawValue), ("country", country?.rawValue))
+        requestData(urlParameters: (sourcesPath, parameters), dataKey: "sources", completionHandler: completionHandler)
+    }
+    
+    /// Requests a list of articles from a given SourceId, using the specified sort method. 
+    /// If no sort is provided, a default one will be used by the service.
     public func getArticles(sourceId: SourceId, sortBy: SortBy? = nil, completionHandler: @escaping (Result<[NewsAPIArticle]>) -> Void) {
         let parameters = buildParametersArray(parameters: ("apiKey", key), ("source", sourceId), ("sortBy", sortBy?.rawValue))
-        
-        guard let url = buildUrl(path: articlesPath, parameters: parameters) else {
-            completionHandler(Result.error(NewsAPIError.invalidUrl))
-            return
-        }
-        
-        urlSession.dataTask(with: url) { jsonData, error in
-            if let error = error {
-                completionHandler(Result.error(error))
-                return
-            }
-            
-            guard let articlesDictionary = jsonData?["articles"] as? [[String: Any]] else {
-                completionHandler(Result.error(NewsAPIError.invalidData))
-                return
-            }
-            
-            do {
-                let articles: [NewsAPIArticle] = try Mapper<NewsAPIArticle>().mapArray(JSONArray: articlesDictionary)
-                completionHandler(Result.success(articles))
-            } catch {
-                completionHandler(Result.error(NewsAPIError.cannotParseData))
-            }
-            
-        }.resume()
+        requestData(urlParameters: (articlesPath, parameters), dataKey: "articles", completionHandler: completionHandler)
     }
 }
