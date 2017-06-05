@@ -1,6 +1,6 @@
 # NewsAPISwift
 
-[![CI Status](http://img.shields.io/travis/Lucas Lima/NewsAPISwift.svg?style=flat)](https://travis-ci.org/Lucas Lima/NewsAPISwift)
+[![CI Status](http://img.shields.io/travis/lucaslimapoa/NewsAPISwift.svg?style=flat)](https://travis-ci.org/lucaslimapoa/NewsAPISwift)
 [![Version](https://img.shields.io/cocoapods/v/NewsAPISwift.svg?style=flat)](http://cocoapods.org/pods/NewsAPISwift)
 [![License](https://img.shields.io/cocoapods/l/NewsAPISwift.svg?style=flat)](http://cocoapods.org/pods/NewsAPISwift)
 [![Platform](https://img.shields.io/cocoapods/p/NewsAPISwift.svg?style=flat)](http://cocoapods.org/pods/NewsAPISwift)
