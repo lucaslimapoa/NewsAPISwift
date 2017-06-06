@@ -35,16 +35,6 @@ class ListSourcesViewController: UITableViewController {
             }
         }
     }
-//
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "ListArticlesSegue" {
-//            let navigationController = segue.destination as! UINavigationController
-//            
-//            let articlesViewController = navigationController.topViewController as! ListArticlesViewController
-//            articlesViewController.newsAPI = newsAPI
-//            articlesViewController.source = sender as! NewsAPISource
-//        }
-//    }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let articlesViewController = UIStoryboard(name: "Main", bundle: nil)
