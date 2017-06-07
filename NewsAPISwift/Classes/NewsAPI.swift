@@ -11,6 +11,7 @@ import ObjectMapper
 
 public protocol NewsAPIProtocol: class {
     func getSources(category: Category?, language: Language?, country: Country?, completionHandler: @escaping (Result<[NewsAPISource]>) -> Void)
+    func getArticles(sourceId: SourceId, sortBy: SortBy?, completionHandler: @escaping (Result<[NewsAPIArticle]>) -> Void)
 }
 
 public class NewsAPI: NewsAPIProtocol {
