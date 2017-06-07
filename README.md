@@ -45,6 +45,7 @@ The second endpoint is used for listing articles and headlines from a given Sour
 
 | Parameter | Description |
 | --------- | ----------- |
+| **SourceId** | This is the id of the source you want to get articles from. This data is found in `NewsAPISource.id`. |
 | **SortBy**  | The sort type you would like to get the articles. The possible values are: `top`, `latest` and `popular`. |
 
 #### Example
