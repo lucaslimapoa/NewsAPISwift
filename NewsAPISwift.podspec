@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-NewsAPISwift is a Swift wrapper around NewsAPI.org service, which provides articles from more than 70 sources.
+NewsAPISwift is a Swift wrapper around newsapi.org service, which provides articles from more than 70 sources.
                        DESC
 
   s.homepage         = 'https://github.com/lucaslimapoa/NewsAPISwift'
