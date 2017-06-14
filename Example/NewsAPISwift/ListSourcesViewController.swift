@@ -14,7 +14,9 @@ class ListSourcesViewController: UITableViewController {
     let newsAPI = NewsAPI(key: "3d188ee285764cb196fd491913960a24")
     var sources = [NewsAPISource]() {
         didSet {
-            self.tableView.reloadData()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
     

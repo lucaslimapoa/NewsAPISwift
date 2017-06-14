@@ -16,7 +16,9 @@ class ListArticlesViewController: UITableViewController {
     
     var articles = [NewsAPIArticle]() {
         didSet {
-            tableView.reloadData()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
     

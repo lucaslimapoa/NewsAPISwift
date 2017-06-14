@@ -224,14 +224,16 @@ class NewsAPITests: XCTestCase {
     }
     
     func createMockArticles() -> (first: NewsAPIArticle, second: NewsAPIArticle) {
-        return (first: NewsAPIArticle(author: "Darrell Etherington",
+        return (first: NewsAPIArticle(sourceId: "techcrunch",
+                                      author: "Darrell Etherington",
                                       title: "Nice phone, Essential, but why is there a hole in the screen?",
                                       articleDescription: "Andy Rubin's Essential smartphone has made its splashy, highly saturated debut, and the phone looks like a pretty stunning piece of kit in press images (most..",
                                       url: URL(string: "https://techcrunch.com/2017/05/30/nice-phone-essential-but-why-is-there-a-hole-in-the-screen/")!,
                                       urlToImage: URL(string: "https://tctechcrunch2011.files.wordpress.com/2017/05/essential-phone1.jpg?w=764&h=400&crop=1")!,
                                       publishedAt: "2017-05-30T12:29:04Z"),
                 
-                second: NewsAPIArticle(author: "Romain Dillet",
+                second: NewsAPIArticle(sourceId: "techcrunch",
+                                       author: "Romain Dillet",
                                        title: "Apple Music executive Bozoma Saint John could be leaving Apple",
                                        articleDescription: "WWDC is right around the corner, but let’s talk about last year’s WWDC for a minute. You may remember that Bozoma Saint John blew everyone away with her..",
                                        url: URL(string: "https://techcrunch.com/2017/06/03/apple-music-executive-bozoma-saint-john-could-be-leaving-apple/")!,
