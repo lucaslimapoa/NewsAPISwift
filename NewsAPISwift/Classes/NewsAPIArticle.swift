@@ -14,7 +14,7 @@ public struct NewsAPIArticle {
     public let articleDescription: String?
     public let url: URL?
     public let urlToImage: URL?
-    public let publishedAt: String?
+    public var publishedAt: String?
 }
 
 extension NewsAPIArticle: ImmutableMappable {
