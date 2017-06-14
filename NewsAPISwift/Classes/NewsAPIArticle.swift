@@ -9,6 +9,7 @@
 import ObjectMapper
 
 public struct NewsAPIArticle {
+    public var sourceId: SourceId?
     public let author: String?
     public let title: String?
     public let articleDescription: String?
@@ -31,7 +32,8 @@ extension NewsAPIArticle: ImmutableMappable {
 extension NewsAPIArticle: Equatable { }
 
 public func ==(lhs: NewsAPIArticle, rhs: NewsAPIArticle) -> Bool {
-    return lhs.author == rhs.author
+    return lhs.sourceId == rhs.sourceId
+        && lhs.author == rhs.author
         && lhs.articleDescription == rhs.articleDescription
         && lhs.title == rhs.title
         && lhs.url == rhs.url

@@ -10,7 +10,12 @@ import Foundation
 import ObjectMapper
 
 public protocol NewsAPIProtocol: class {
+    /// Requests a list of sources matching the search criteria specified by the Category, Language and Country parameters.
+    /// If no parameters are specified, all sources will be returned.
     func getSources(category: Category?, language: Language?, country: Country?, completionHandler: @escaping (Result<[NewsAPISource]>) -> Void)
+    
+    /// Requests a list of articles from a given SourceId, using the specified sort method.
+    /// If no sort is provided, a default one will be used by the service.
     func getArticles(sourceId: SourceId, sortBy: SortBy?, completionHandler: @escaping (Result<[NewsAPIArticle]>) -> Void)
 }
 
@@ -82,17 +87,30 @@ public class NewsAPI: NewsAPIProtocol {
         }.resume()
     }
     
-    /// Requests a list of sources matching the search criteria specified by the Category, Language and Country parameters.
-    /// If no parameters are specified, all sources will be returned.
     public func getSources(category: Category? = nil, language: Language? = nil, country: Country? = nil, completionHandler: @escaping (Result<[NewsAPISource]>) -> Void) {
         let parameters = buildParametersArray(parameters: ("category", category?.rawValue), ("language", language?.rawValue), ("country", country?.rawValue))
         requestData(urlParameters: (sourcesPath, parameters), dataKey: "sources", completionHandler: completionHandler)
     }
     
-    /// Requests a list of articles from a given SourceId, using the specified sort method. 
-    /// If no sort is provided, a default one will be used by the service.
     public func getArticles(sourceId: SourceId, sortBy: SortBy? = nil, completionHandler: @escaping (Result<[NewsAPIArticle]>) -> Void) {
         let parameters = buildParametersArray(parameters: ("apiKey", key), ("source", sourceId), ("sortBy", sortBy?.rawValue))
-        requestData(urlParameters: (articlesPath, parameters), dataKey: "articles", completionHandler: completionHandler)
+        requestData(urlParameters: (articlesPath, parameters), dataKey: "articles") { (result: Result<[NewsAPIArticle]>) -> Void in
+            switch result {
+            case .success(let articles):
+                let completedArticles = articles.map { (article: NewsAPIArticle) -> NewsAPIArticle in
+                    var mutableArticle = article
+                    mutableArticle.sourceId = sourceId
+                    
+                    return mutableArticle
+                }
+                
+                completionHandler(Result.success(completedArticles))
+                break
+            
+            case .error(let error):
+                completionHandler(Result.error(error))
+                break
+            }
+        }
     }
 }
