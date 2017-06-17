@@ -19,7 +19,7 @@ public protocol NewsAPIProtocol: class {
     func getArticles(sourceId: SourceId, sortBy: SortBy?, completionHandler: @escaping (Result<[NewsAPIArticle]>) -> Void)
 }
 
-public class NewsAPI: NewsAPIProtocol {
+open class NewsAPI: NewsAPIProtocol {
     
     private let key: String
     
@@ -87,12 +87,12 @@ public class NewsAPI: NewsAPIProtocol {
         }.resume()
     }
     
-    public func getSources(category: Category? = nil, language: Language? = nil, country: Country? = nil, completionHandler: @escaping (Result<[NewsAPISource]>) -> Void) {
+    open func getSources(category: Category? = nil, language: Language? = nil, country: Country? = nil, completionHandler: @escaping (Result<[NewsAPISource]>) -> Void) {
         let parameters = buildParametersArray(parameters: ("category", category?.rawValue), ("language", language?.rawValue), ("country", country?.rawValue))
         requestData(urlParameters: (sourcesPath, parameters), dataKey: "sources", completionHandler: completionHandler)
     }
     
-    public func getArticles(sourceId: SourceId, sortBy: SortBy? = nil, completionHandler: @escaping (Result<[NewsAPIArticle]>) -> Void) {
+    open func getArticles(sourceId: SourceId, sortBy: SortBy? = nil, completionHandler: @escaping (Result<[NewsAPIArticle]>) -> Void) {
         let parameters = buildParametersArray(parameters: ("apiKey", key), ("source", sourceId), ("sortBy", sortBy?.rawValue))
         requestData(urlParameters: (articlesPath, parameters), dataKey: "articles") { (result: Result<[NewsAPIArticle]>) -> Void in
             switch result {
