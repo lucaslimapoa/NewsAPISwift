@@ -16,6 +16,16 @@ public struct NewsAPIArticle {
     public let url: URL?
     public let urlToImage: URL?
     public var publishedAt: String?
+    
+    public init(sourceId: SourceId?, author: String?, title: String?, articleDescription: String?, url: URL?, urlToImage: URL?, publishedAt: String?) {
+        self.sourceId = sourceId
+        self.author = author
+        self.title = title
+        self.articleDescription = articleDescription
+        self.url = url
+        self.urlToImage = urlToImage
+        self.publishedAt = publishedAt
+    }
 }
 
 extension NewsAPIArticle: ImmutableMappable {
