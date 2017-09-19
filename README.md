@@ -4,6 +4,7 @@
 [![Version](https://img.shields.io/cocoapods/v/NewsAPISwift.svg?style=flat)](http://cocoapods.org/pods/NewsAPISwift)
 [![License](https://img.shields.io/cocoapods/l/NewsAPISwift.svg?style=flat)](http://cocoapods.org/pods/NewsAPISwift)
 [![Platform](https://img.shields.io/cocoapods/p/NewsAPISwift.svg?style=flat)](http://cocoapods.org/pods/NewsAPISwift)
+[![codebeat badge](https://codebeat.co/badges/bf6f15c8-5844-4d0b-85ff-0e50d1c51176)](https://codebeat.co/projects/github-com-lucaslimapoa-newsapiswift-master)
 
 NewsAPISwift is a Swift wrapper around [NewsAPI.org](http://newsapi.org), a service that provides articles and headlines from more than 70 sources.
 
