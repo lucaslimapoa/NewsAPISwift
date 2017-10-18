@@ -1,8 +1,8 @@
 {
   "name": "NewsAPISwift",
-  "version": "0.1.0",
+  "version": "1.0",
   "summary": "NewsAPISwift is a Swift wrapper around NewsAPI.",
-  "description": "NewsAPISwift is a Swift wrapper around NewsAPI.org service, which provides articles from more than 70 sources.",
+  "description": "NewsAPISwift is a Swift wrapper around newsapi.org service, which provides articles from more than 70 sources.",
   "homepage": "https://github.com/lucaslimapoa/NewsAPISwift",
   "license": {
     "type": "MIT",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/lucaslimapoa/NewsAPISwift.git",
-    "tag": "0.1.0"
+    "tag": "1.0"
   },
   "platforms": {
     "ios": "8.0"
