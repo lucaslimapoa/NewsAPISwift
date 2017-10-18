@@ -34,8 +34,13 @@ extension NewsAPIArticle: ImmutableMappable {
         title               = try? map.value("title")
         articleDescription  = try? map.value("description")
         url                 = try? map.value("url", using: URLTransform())
-        urlToImage          = try? map.value("urlToImage", using: URLTransform())
         publishedAt         = try? map.value("publishedAt")
+        
+        if let imageURL: String = try? map.value("urlToImage") {
+            urlToImage = URL(string: imageURL)
+        } else {
+            urlToImage = nil
+        }
     }
 }
 
