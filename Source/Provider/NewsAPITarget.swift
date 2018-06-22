@@ -30,6 +30,13 @@ extension NewsAPITarget: TargetType {
             return makeSourceParameters(category: category, language: language, country: country)
         }
     }
+    
+    var endpoint: URL? {
+        switch self {
+        case .sources(_, _, _):
+            return makeSourceEndpoint(baseUrl: self.baseUrl, path: self.path, parameters: self.parameters)
+        }
+    }
 }
 
 private extension NewsAPITarget {
@@ -50,4 +57,16 @@ private extension NewsAPITarget {
         
         return parameters
     }        
+}
+
+private extension NewsAPITarget {
+    func makeSourceEndpoint(baseUrl: String, path: String, parameters: [String: String]) -> URL? {
+        guard var urlComponents = URLComponents(string: "\(baseUrl)\(path)") else { return nil }
+        
+        urlComponents.queryItems = parameters.map { name, value in
+            return URLQueryItem(name: name, value: value)
+        }
+        
+        return urlComponents.url
+    }
 }

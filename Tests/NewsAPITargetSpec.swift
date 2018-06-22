@@ -19,7 +19,7 @@ class NewsAPITargetSpec: QuickSpec {
             }
         }
         
-        describe("Sources Endpoint") {
+        describe("Sources") {
             it("Has Path") {
                 expect(NewsAPITarget.sources(category: .all, language: .all, country: .all).path) == "/v2/sources"
             }
@@ -67,6 +67,48 @@ class NewsAPITargetSpec: QuickSpec {
                         expect(parameters["category"]) == "general"
                         expect(parameters["language"]) == "en"
                         expect(parameters["country"]) == "us"
+                    }
+                }
+                
+                describe("Endpoint") {
+                    context("When All Parameters Are All") {
+                        it("Returns Endpoint For All Sources") {
+                            expect(NewsAPITarget.sources(category: .all, language: .all, country: .all).endpoint)
+                                == URL(string: "https://newsapi.org/v2/sources?")
+                        }
+                    }
+                    
+                    context("When Category Is General") {
+                        it("Returns Endpoint With General Category") {
+                            expect(NewsAPITarget.sources(category: .general, language: .all, country: .all).endpoint)
+                                == URL(string: "https://newsapi.org/v2/sources?category=general")
+                        }
+                    }
+                    
+                    context("When Language Is English") {
+                        it("Returns Endpoint With English Language") {
+                            expect(NewsAPITarget.sources(category: .all, language: .en, country: .all).endpoint)
+                                == URL(string: "https://newsapi.org/v2/sources?language=en")
+                        }
+                    }
+                    
+                    context("When Country Is US") {
+                        it("Returns Endpoint With US Country") {
+                            expect(NewsAPITarget.sources(category: .all, language: .all, country: .us).endpoint)
+                                == URL(string: "https://newsapi.org/v2/sources?country=us")
+                        }
+                    }
+                    
+                    context("When Has All Parameters") {
+                        it("Returns Endpoint With All Parameters") {
+                            let query = NewsAPITarget
+                                .sources(category: .general, language: .en, country: .us).endpoint?.query?.split(separator: "&")
+                            
+                            expect(query?.count) == 3
+                            expect(query?.contains("category=general")) == true
+                            expect(query?.contains("language=en")) == true
+                            expect(query?.contains("country=us")) == true
+                        }
                     }
                 }
             }

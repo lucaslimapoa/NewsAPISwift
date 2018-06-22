@@ -10,4 +10,5 @@ protocol TargetType {
     var baseUrl: String { get }
     var path: String { get }
     var parameters: [String: String] { get }
+    var endpoint: URL? { get }
 }
