@@ -11,4 +11,5 @@ import Foundation
 public enum NewsAPIError: Error {
     case unknown
     case unableToParse
+    case requestFailed
 }

@@ -29,7 +29,12 @@ class NewsProvider {
         }
         
         let dataTask = urlSession.dataTask(with: urlRequest) { data, response, error in
-            completion?(data, nil)
+            if let data = data {
+                completion?(data, nil)
+                return
+            }
+            
+            completion?(nil, .requestFailed)
         }
         
         dataTask.resume()

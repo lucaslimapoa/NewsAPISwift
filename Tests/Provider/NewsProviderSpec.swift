@@ -46,16 +46,30 @@ class NewsProviderSpec: QuickSpec {
             
             context("Successful") {
                 it("Returns Data") {
-                    stub(condition: isHost("newsapi.org")) { _ in
-                        return OHHTTPStubsResponse(data: Fakes.Sources.successJsonData,
-                                                   statusCode: 200,
-                                                   headers: ["Content-Type":"application/json"])
-                    }
+                    NetworkStub.installSuccessfulRequest(data: Fakes.Sources.successJsonData)
                         
                     waitUntil(timeout: 1.0) { success in
-                        newsProvider.request(.sources(category: .all, language: .all, country: .all)) { data, _ in
+                        newsProvider.request(.sources(category: .all, language: .all, country: .all)) { data, error in
                             expect(data).toNot(beNil())
+                            expect(error).to(beNil())
                             success()
+                        }
+                    }
+                }
+            }
+            
+            context("Error") {
+                it("Returns Error") {
+                    NetworkStub.installFailureRequest()
+                    
+                    waitUntil(timeout: 1.0) { success in
+                        newsProvider.request(.sources(category: .all, language: .all, country: .all)) { data, error in
+                            expect(data).to(beNil())
+                            if case .requestFailed = error! {
+                                success()
+                            } else {
+                                fail("Wrong Error Returned")
+                            }
                         }
                     }
                 }
