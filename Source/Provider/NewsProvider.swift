@@ -8,7 +8,7 @@
 
 import Foundation
 
-typealias NewsProviderRequestCallback = (((Data?, NewsAPIError?) -> ()))?
+typealias NewsProviderRequestCallback = (((Data?, NewsAPIError?) -> ()))
 
 class NewsProvider {
     private let apiKey: String
@@ -20,15 +20,29 @@ class NewsProvider {
     }
     
     @discardableResult
-    func request(_ target: NewsAPITarget, completion: NewsProviderRequestCallback) -> URLSessionDataTask? {
-        let urlRequestBuilder = URLRequestBuilder(url: target.endpoint, headers: ["X-Api-Key": apiKey])
-        
-        guard let urlRequest = URLRequest(builder: urlRequestBuilder) else {
+    func request(_ target: NewsAPITarget, completion: NewsProviderRequestCallback?) -> URLSessionDataTask? {
+        guard let urlRequest = makeUrlRequest(with: target) else {
             completion?(nil, .unknown)
             return nil
         }
         
-        let dataTask = urlSession.dataTask(with: urlRequest) { data, response, error in
+        let completionHandler = makeDataTaskCompletionHandler(completion: completion)
+        let dataTask = urlSession.dataTask(with: urlRequest, completionHandler: completionHandler)
+        
+        dataTask.resume()
+        
+        return dataTask
+    }
+}
+
+private extension NewsProvider {
+    func makeUrlRequest(with target: NewsAPITarget) -> URLRequest? {
+        let urlRequestBuilder = URLRequestBuilder(url: target.endpoint, headers: ["X-Api-Key": apiKey])
+        return URLRequest(builder: urlRequestBuilder)
+    }
+    
+    func makeDataTaskCompletionHandler(completion: NewsProviderRequestCallback?) -> ((Data?, URLResponse?, Error?) -> ()) {
+        return { data, response, error in
             if let data = data {
                 completion?(data, nil)
                 return
@@ -36,9 +50,5 @@ class NewsProvider {
             
             completion?(nil, .requestFailed)
         }
-        
-        dataTask.resume()
-        
-        return dataTask
     }
 }
