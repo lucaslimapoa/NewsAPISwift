@@ -8,6 +8,7 @@
 
 import Quick
 import Nimble
+import OHHTTPStubs
 
 import NewsAPISwift
 
@@ -21,21 +22,34 @@ class NewsAPISpec: QuickSpec {
         
         describe("Requests") {
             it("Returns URLSessionDataTask") {
-                expect(newsAPI.request(.sources(category: .all, language: .all, country: .all), completion: { _ in }))
+                expect(newsAPI.request(.sources(category: .all, language: .all, country: .all)) { _ in })
                     .to(beAKindOf(URLSessionDataTask.self))
             }
         }
         
         describe("Sources Request") {
-            it("All Sources") {
-                waitUntil(timeout: 1.0) { done in
-                    newsAPI.request(.sources(category: .all, language: .all, country: .all)) { result in
-                        switch result {
-                        case .success(let sources):
-                            expect(sources.count) == 1
-                            done()
-                        case .failure(_):
-                            fail()
+            context("Successful Request") {
+                beforeEach {
+                    stub(condition: isHost("newsapi.org")) { _ in                        
+                        return OHHTTPStubsResponse(data: Fakes.Sources.successJsonData,
+                                                   statusCode: 200,
+                                                   headers: ["Content-Type":"application/json"])
+                    }
+                }
+                
+                context("Get All Sources") {
+                    it("Returns All Sources") {
+                        waitUntil(timeout: 3.0) { success in
+                            newsAPI.request(.sources(category: .all, language: .all, country: .all)) { result in
+                                switch result {
+                                case .success(let sources):
+                                    expect(sources.count) == 1
+                                    expect(sources.first) == Fakes.Sources.source
+                                    success()
+                                case .failure(_):
+                                    fail()
+                                }
+                            }
                         }
                     }
                 }

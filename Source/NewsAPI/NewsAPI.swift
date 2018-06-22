@@ -16,8 +16,35 @@ public class NewsAPI {
     }
     
     @discardableResult
-    public func request(_ target: NewsAPITarget, completion: @escaping ((Result<[NewsAPISource], NewsAPIError>) -> ())) -> URLSessionDataTask {
-        completion(Result.success([NewsAPISource()]))
-        return URLSessionDataTask()
+    public func request(_ target: NewsAPITarget, completion: @escaping ((Result<[NewsAPISource], NewsAPIError>) -> ())) -> URLSessionDataTask? {
+        guard let url = target.endpoint else {
+            completion(.failure(.unknown))
+            return nil
+        }
+        
+        let urlSession = URLSession.shared
+        
+        let dataTask = urlSession.dataTask(with: url) { (data, response, error) in
+            struct NewsSourceResponse: Decodable {
+                let status: String
+                let sources: [NewsAPISource]
+            }
+            
+            guard let data = data else {
+                completion(.failure(.unknown))
+                return
+            }
+            
+            do {
+                let response = try JSONDecoder().decode(NewsSourceResponse.self, from: data)
+                completion(.success(response.sources))
+            } catch {
+                completion(.failure(.unknown))
+            }
+        }
+        
+        dataTask.resume()
+        
+        return dataTask
     }
 }

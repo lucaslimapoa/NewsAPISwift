@@ -9,5 +9,5 @@
 import Foundation
 
 public enum NewsAPIError: Error {
-    
+    case unknown
 }
