@@ -13,17 +13,17 @@ public struct NewsAPISource: Equatable, Decodable {
     public let name: String
     public let description: String
     public let url: URL
-    public let category: NewsAPICategory
-    public let language: NewsAPILanguage
-    public let country: NewsAPICountry
+    public let category: NewsCategory
+    public let language: NewsLanguage
+    public let country: NewsCountry
     
     public init(id: String,
                 name: String,
                 description: String,
                 url: URL,
-                category: NewsAPICategory,
-                language: NewsAPILanguage,
-                country: NewsAPICountry) {
+                category: NewsCategory,
+                language: NewsLanguage,
+                country: NewsCountry) {
         self.id = id
         self.name = name
         self.description = description

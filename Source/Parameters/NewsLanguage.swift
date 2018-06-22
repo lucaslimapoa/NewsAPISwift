@@ -6,7 +6,7 @@
 //  Copyright © 2018 Lucas Lima. All rights reserved.
 //
 
-public enum NewsAPILanguage: String, Decodable {
+public enum NewsLanguage: String, Decodable {
     case all
     case ar
     case de

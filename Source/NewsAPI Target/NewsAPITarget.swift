@@ -9,10 +9,10 @@
 import Foundation
 
 public enum NewsAPITarget {
-    case sources(category: NewsAPICategory, language: NewsAPILanguage, country: NewsAPICountry)
+    case sources(category: NewsCategory, language: NewsLanguage, country: NewsCountry)
 }
 
-extension NewsAPITarget: TargetType {
+extension NewsAPITarget: APITargetType {
     var baseUrl: String {
         return "https://newsapi.org"
     }
@@ -40,7 +40,7 @@ extension NewsAPITarget: TargetType {
 }
 
 private extension NewsAPITarget {
-    func makeSourceParameters(category: NewsAPICategory, language: NewsAPILanguage, country: NewsAPICountry) -> [String: String] {
+    func makeSourceParameters(category: NewsCategory, language: NewsLanguage, country: NewsCountry) -> [String: String] {
         var parameters = [String: String]()
         
         if case .all = category {} else {

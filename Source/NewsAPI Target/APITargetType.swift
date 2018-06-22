@@ -6,7 +6,7 @@
 //  Copyright © 2018 Lucas Lima. All rights reserved.
 //
 
-protocol TargetType {
+protocol APITargetType {
     var baseUrl: String { get }
     var path: String { get }
     var parameters: [String: String] { get }

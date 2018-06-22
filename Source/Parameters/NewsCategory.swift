@@ -6,7 +6,7 @@
 //  Copyright © 2018 Lucas Lima. All rights reserved.
 //
 
-public enum NewsAPICategory: String, Decodable {
+public enum NewsCategory: String, Decodable {
     case all
     case business
     case entertainment
