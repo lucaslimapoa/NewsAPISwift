@@ -17,6 +17,8 @@ class NewsProviderSpec: QuickSpec {
         var urlSessionMock: URLSessionMock!
         var newsProvider: NewsProvider!
         
+        let allSourcesTarget = NewsAPITarget.sources(category: .all, language: .all, country: .all)
+        
         describe("Request") {
             beforeEach {
                 urlSessionMock = URLSessionMock()
@@ -24,7 +26,7 @@ class NewsProviderSpec: QuickSpec {
             }
             
             it("Has X-Api-Key Header") {
-                newsProvider.request(.sources(category: .all, language: .all, country: .all), completion: nil)
+                newsProvider.request(allSourcesTarget, completion: nil)
                 
                 let request = urlSessionMock.dataTask?.request
                 
@@ -32,7 +34,7 @@ class NewsProviderSpec: QuickSpec {
             }
             
             it("Resumes Data Task") {
-                let dataTask = newsProvider.request(.sources(category: .all, language: .all, country: .all), completion: nil)
+                let dataTask = newsProvider.request(allSourcesTarget, completion: nil)
                     as! URLSessionDataTaskMock
                 
                 expect(dataTask.resumeCalled) == true
@@ -49,7 +51,7 @@ class NewsProviderSpec: QuickSpec {
                     NetworkStub.installSuccessfulRequest(data: Fakes.Sources.successJsonData)
                         
                     waitUntil(timeout: 1.0) { success in
-                        newsProvider.request(.sources(category: .all, language: .all, country: .all)) { data, error in
+                        newsProvider.request(allSourcesTarget) { data, error in
                             expect(data).toNot(beNil())
                             expect(error).to(beNil())
                             success()
@@ -63,7 +65,7 @@ class NewsProviderSpec: QuickSpec {
                     NetworkStub.installFailureRequest()
                     
                     waitUntil(timeout: 1.0) { success in
-                        newsProvider.request(.sources(category: .all, language: .all, country: .all)) { data, error in
+                        newsProvider.request(allSourcesTarget) { data, error in
                             expect(data).to(beNil())
                             if case .requestFailed = error! {
                                 success()
