@@ -8,6 +8,7 @@
 
 import Quick
 import Nimble
+import OHHTTPStubs
 
 @testable import NewsAPISwift
 
@@ -16,12 +17,12 @@ class NewsProviderSpec: QuickSpec {
         var urlSessionMock: URLSessionMock!
         var newsProvider: NewsProvider!
         
-        beforeEach {
-            urlSessionMock = URLSessionMock()
-            newsProvider = NewsProvider(apiKey: "someKey", urlSession: urlSessionMock)
-        }
-        
         describe("Request") {
+            beforeEach {
+                urlSessionMock = URLSessionMock()
+                newsProvider = NewsProvider(apiKey: "someKey", urlSession: urlSessionMock)
+            }
+            
             it("Has X-Api-Key Header") {
                 newsProvider.request(.sources(category: .all, language: .all, country: .all), completion: nil)
                 
@@ -35,6 +36,29 @@ class NewsProviderSpec: QuickSpec {
                     as! URLSessionDataTaskMock
                 
                 expect(dataTask.resumeCalled) == true
+            }
+        }
+        
+        describe("Requests Sources") {
+            beforeEach {
+                newsProvider = NewsProvider(apiKey: "someKey")
+            }
+            
+            context("Successful") {
+                it("Returns Data") {
+                    stub(condition: isHost("newsapi.org")) { _ in
+                        return OHHTTPStubsResponse(data: Fakes.Sources.successJsonData,
+                                                   statusCode: 200,
+                                                   headers: ["Content-Type":"application/json"])
+                    }
+                        
+                    waitUntil(timeout: 1.0) { success in
+                        newsProvider.request(.sources(category: .all, language: .all, country: .all)) { data, _ in
+                            expect(data).toNot(beNil())
+                            success()
+                        }
+                    }
+                }
             }
         }
     }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-typealias NewsSourceCallback = (((Result<[NewsSource], NewsAPIError>) -> ()))?
+typealias NewsProviderRequestCallback = (((Data?, NewsAPIError?) -> ()))?
 
 class NewsProvider {
     private let apiKey: String
@@ -20,15 +20,18 @@ class NewsProvider {
     }
     
     @discardableResult
-    func request(_ target: NewsAPITarget, completion: NewsSourceCallback) -> URLSessionDataTask? {
+    func request(_ target: NewsAPITarget, completion: NewsProviderRequestCallback) -> URLSessionDataTask? {
         let urlRequestBuilder = URLRequestBuilder(url: target.endpoint, headers: ["X-Api-Key": apiKey])
         
         guard let urlRequest = URLRequest(builder: urlRequestBuilder) else {
-            completion?(.failure(.unknown))
+            completion?(nil, .unknown)
             return nil
         }
         
-        let dataTask = urlSession.dataTask(with: urlRequest)        
+        let dataTask = urlSession.dataTask(with: urlRequest) { data, response, error in
+            completion?(data, nil)
+        }
+        
         dataTask.resume()
         
         return dataTask
