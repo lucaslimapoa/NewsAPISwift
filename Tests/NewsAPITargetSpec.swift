@@ -59,6 +59,16 @@ class NewsAPITargetSpec: QuickSpec {
                             == ["country": "us"]
                     }
                 }
+                
+                context("When Has Values For All Parameters") {
+                    it("Returns All Parameters") {
+                        let parameters = NewsAPITarget.sources(category: .general, language: .en, country: .us).parameters
+                        expect(parameters.count) == 3
+                        expect(parameters["category"]) == "general"
+                        expect(parameters["language"]) == "en"
+                        expect(parameters["country"]) == "us"
+                    }
+                }
             }
         }
     }
