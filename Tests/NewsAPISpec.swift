@@ -10,50 +10,51 @@ import Quick
 import Nimble
 import OHHTTPStubs
 
-import NewsAPISwift
+@testable import NewsAPISwift
 
 class NewsAPISpec: QuickSpec {
     override func spec() {
         var newsAPI: NewsAPI!
+        var newsProviderMock: NewsProviderMock!
         
         beforeEach {
-            newsAPI = NewsAPI(apiKey: "someKey")
-        }
-        
-        describe("Requests") {
-            it("Returns URLSessionDataTask") {
-                expect(newsAPI.request(.sources(category: .all, language: .all, country: .all)) { _ in })
-                    .to(beAKindOf(URLSessionDataTask.self))
-            }
+            newsProviderMock = NewsProviderMock(apiKey: "someKey")
+            newsAPI = NewsAPI(provider: newsProviderMock)
         }
         
         describe("Sources Request") {
-            context("Successful Request") {
+            context("Get All Sources") {
                 beforeEach {
-                    stub(condition: isHost("newsapi.org")) { _ in                        
-                        return OHHTTPStubsResponse(data: Fakes.Sources.successJsonData,
-                                                   statusCode: 200,
-                                                   headers: ["Content-Type":"application/json"])
-                    }
+                    newsProviderMock.requestStub = (Fakes.Sources.successJsonData, nil)
                 }
                 
-                context("Get All Sources") {
-                    it("Returns All Sources") {
-                        waitUntil(timeout: 3.0) { success in
-                            newsAPI.request(.sources(category: .all, language: .all, country: .all)) { result in
-                                switch result {
-                                case .success(let sources):
-                                    expect(sources.count) == 1
-                                    expect(sources.first) == Fakes.Sources.source
-                                    success()
-                                case .failure(_):
-                                    fail()
-                                }
+                it("Returns All Sources") {
+                    waitUntil(timeout: 1.0) { success in
+                        newsAPI.getSources() { result in
+                            switch result {
+                            case .success(let sources):
+                                expect(sources.count) == 1
+                                expect(sources.first) == Fakes.Sources.source
+                                success()
+                            case .failure(_):
+                                fail()
                             }
                         }
                     }
                 }
             }
         }
+    }
+}
+
+private class NewsProviderMock: NewsProvider {
+    var requestStub: (data: Data?, error: NewsAPIError?) = (Data(), nil)
+    var requestParams: (target: NewsAPITarget, completion: NewsProviderRequestCallback?)?
+    
+    override func request(_ target: NewsAPITarget, completion: NewsProviderRequestCallback?) -> URLSessionDataTask? {
+        requestParams = (target, completion)
+        completion?(requestStub.data, requestStub.error)
+        
+        return URLSessionDataTask()
     }
 }

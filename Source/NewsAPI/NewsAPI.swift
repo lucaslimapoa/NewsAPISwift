@@ -8,43 +8,34 @@
 
 import Foundation
 
+public typealias NewsAPISourceRequest = ((Result<[NewsSource], NewsAPIError>) -> ())
+
 public class NewsAPI {
-    private let apiKey: String
+    private let provider: NewsProvider
     
     public init(apiKey: String) {
-        self.apiKey = apiKey
+        self.provider = NewsProvider(apiKey: apiKey)
+    }
+    
+    init(provider: NewsProvider) {
+        self.provider = provider
     }
     
     @discardableResult
-    public func request(_ target: NewsAPITarget, completion: @escaping ((Result<[NewsSource], NewsAPIError>) -> ())) -> URLSessionDataTask? {
-        guard let url = target.endpoint else {
-            completion(.failure(.unknown))
-            return nil
-        }
-        
-        let urlSession = URLSession.shared
-        
-        let dataTask = urlSession.dataTask(with: url) { (data, response, error) in
-            struct NewsSourceResponse: Decodable {
-                let status: String
-                let sources: [NewsSource]
-            }
-            
+    public func getSources(category: NewsCategory = .all, language: NewsLanguage = .all, country: NewsCountry = .all, completion: @escaping NewsAPISourceRequest) -> URLSessionDataTask? {
+        return provider.request(.sources(category: category, language: language, country: country)) { data, error in
             guard let data = data else {
-                completion(.failure(.unknown))
+                completion(.failure(error ?? .unknown))
                 return
             }
             
             do {
-                let response = try JSONDecoder().decode(NewsSourceResponse.self, from: data)
-                completion(.success(response.sources))
-            } catch {
-                completion(.failure(.unknown))
+                let sources = try NewsSourceDecoder().decode(data: data)
+                completion(.success(sources))
+            } catch let error {
+                let newsAPIError = (error as? NewsAPIError) ?? .unknown
+                completion(.failure(newsAPIError))
             }
         }
-        
-        dataTask.resume()
-        
-        return dataTask
     }
 }
