@@ -16,7 +16,7 @@ public class NewsAPI {
     }
     
     @discardableResult
-    public func request(_ target: NewsAPITarget, completion: @escaping ((Result<[NewsAPISource], NewsAPIError>) -> ())) -> URLSessionDataTask? {
+    public func request(_ target: NewsAPITarget, completion: @escaping ((Result<[NewsSource], NewsAPIError>) -> ())) -> URLSessionDataTask? {
         guard let url = target.endpoint else {
             completion(.failure(.unknown))
             return nil
@@ -27,7 +27,7 @@ public class NewsAPI {
         let dataTask = urlSession.dataTask(with: url) { (data, response, error) in
             struct NewsSourceResponse: Decodable {
                 let status: String
-                let sources: [NewsAPISource]
+                let sources: [NewsSource]
             }
             
             guard let data = data else {

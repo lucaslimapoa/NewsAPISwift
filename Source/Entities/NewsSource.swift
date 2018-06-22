@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct NewsAPISource: Equatable, Decodable {
+public struct NewsSource: Equatable, Decodable {
     public let id: String
     public let name: String
     public let description: String

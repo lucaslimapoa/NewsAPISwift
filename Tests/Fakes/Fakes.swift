@@ -31,7 +31,32 @@ extension Fakes {
         }
         """.data(using: .utf8)!
         
-        static let source = NewsAPISource(id: "source-id",
+        static let invalidJsonData =
+            """
+        {
+           "status":"ok",
+           "sources":[
+              {
+                 "id":"source-id",
+                 "name":"Source",
+                 "description":"Source Description",                 
+                 "category":"general",
+                 "language":"en",
+                 "country":"us"
+              }
+           ]
+        }
+        """.data(using: .utf8)!
+        
+        static let emptyJsonData =
+            """
+        {
+           "status":"ok",
+           "sources":[]
+        }
+        """.data(using: .utf8)!
+        
+        static let source = NewsSource(id: "source-id",
                                           name: "Source",
                                           description: "Source Description",
                                           url: URL(string: "http://source.com")!,
