@@ -8,5 +8,13 @@
 
 public enum NewsAPICategory: String {
     case all
+    case business
+    case entertainment
     case general
+    case health
+    case science
+    case sports
+    case technology
 }
+
+
