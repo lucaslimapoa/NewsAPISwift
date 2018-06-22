@@ -28,6 +28,15 @@ class NewsAPISpec: QuickSpec {
                     newsProviderMock.requestStub = (Fakes.Sources.successJsonData, nil)
                 }
                 
+                it("Calls NewsProvider Correctly") {
+                    newsAPI.getSources() { _ in }
+                    let requestTarget = newsProviderMock.requestParams!.target
+                    
+                    if case .sources(category: .all, language: .all, country: .all) = requestTarget { } else {
+                        fail("Wrong parameters passed")
+                    }
+                }
+                
                 it("Returns All Sources") {
                     waitUntil(timeout: 1.0) { success in
                         newsAPI.getSources() { result in
