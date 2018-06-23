@@ -9,12 +9,23 @@
 import Foundation
 import NewsAPISwift
 
-struct Fakes { }
+struct Fakes {
+    struct NewsAPI {
+        static let noApiKeyErrorJsonData =
+        """
+        {
+            "status": "error",
+            "code": "apiKeyMissing",
+            "message": "Your API key is missing. Append this to the URL with the apiKey param, or use the x-api-key HTTP header."
+        }
+        """.data(using: .utf8)!
+    }
+}
 
 extension Fakes {
     struct Sources {
         static let successJsonData =
-            """
+        """
         {
            "status":"ok",
            "sources":[
@@ -32,7 +43,7 @@ extension Fakes {
         """.data(using: .utf8)!
         
         static let invalidJsonData =
-            """
+        """
         {
            "status":"ok",
            "sources":[
@@ -49,7 +60,7 @@ extension Fakes {
         """.data(using: .utf8)!
         
         static let emptyJsonData =
-            """
+        """
         {
            "status":"ok",
            "sources":[]

@@ -13,4 +13,5 @@ public enum NewsAPIError: Error {
     case unableToParse
     case requestFailed
     case invalidEndpointUrl
+    case serviceError(code: String, message: String)
 }

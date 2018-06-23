@@ -10,22 +10,25 @@ import Foundation
 
 class NewsSourceDecoder {
     func decode(data: Data) throws -> [NewsSource] {
-        let sources: [NewsSource]
+        let response = try? JSONDecoder().decode(NewsSourceResponse.self, from: data)
         
-        do {
-            let response = try JSONDecoder().decode(NewsSourceResponse.self, from: data)
-            sources = response.sources
-        } catch {
-            throw NewsAPIError.unableToParse
+        if let sources = response?.sources {
+            return sources
         }
         
-        return sources
+        if let code = response?.code, let message = response?.message {
+            throw NewsAPIError.serviceError(code: code, message: message)
+        }
+        
+        throw NewsAPIError.unableToParse
     }
 }
 
 private extension NewsSourceDecoder {
     struct NewsSourceResponse: Decodable {
         let status: String
-        let sources: [NewsSource]
+        let code: String?
+        let message: String?
+        let sources: [NewsSource]?
     }
 }

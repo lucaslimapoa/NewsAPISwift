@@ -14,9 +14,14 @@ import Quick
 class NewsSourceDecoderSpec: QuickSpec {
     override func spec() {
         describe("NewsAPI Source JSON Decoding") {
+            var newsSourceDecoder: NewsSourceDecoder!
+            
+            beforeEach {
+                newsSourceDecoder = NewsSourceDecoder()
+            }
+            
             context("When Valid Data") {
                 it("Returns Sources") {
-                    let newsSourceDecoder = NewsSourceDecoder()
                     expect { try newsSourceDecoder.decode(data: Fakes.Sources.successJsonData) }
                         == [Fakes.Sources.source]
                 }
@@ -24,7 +29,6 @@ class NewsSourceDecoderSpec: QuickSpec {
             
             context("When Invalid Data") {
                 it("Throws Unable To Parse Error") {
-                    let newsSourceDecoder = NewsSourceDecoder()
                     expect { try newsSourceDecoder.decode(data: Fakes.Sources.invalidJsonData) }
                         .to(throwError(NewsAPIError.unableToParse))
                 }
@@ -32,9 +36,16 @@ class NewsSourceDecoderSpec: QuickSpec {
             
             context("When Empty Data") {
                 it("Throws Unable To Parse Error") {
-                    let newsSourceDecoder = NewsSourceDecoder()
                     expect { try newsSourceDecoder.decode(data: Fakes.Sources.emptyJsonData) }
                         == []
+                }
+            }
+            
+            context("When Server Error Response") {
+                it("Throws Service Error") {
+                    expect { try newsSourceDecoder.decode(data: Fakes.NewsAPI.noApiKeyErrorJsonData) }
+                        .to(throwError(NewsAPIError.serviceError(code: "apiKeyMissing",
+                                                                 message: "Your API key is missing. Append this to the URL with the apiKey param, or use the x-api-key HTTP header.")))
                 }
             }
         }
