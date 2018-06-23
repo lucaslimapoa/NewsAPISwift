@@ -21,13 +21,6 @@ class URLRequestBuilder {
 extension URLRequest {
     typealias BuilderClosure = ((URLRequestBuilder) -> ())
     
-    init?(builderClosure: BuilderClosure) {
-        let builder = URLRequestBuilder()
-        builderClosure(builder)
-        
-        self.init(builder: builder)
-    }
-    
     init?(builder: URLRequestBuilder) {
         guard let url = builder.url else { return nil }
         self.init(url: url)
