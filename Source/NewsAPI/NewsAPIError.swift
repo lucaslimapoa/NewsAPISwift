@@ -12,4 +12,5 @@ public enum NewsAPIError: Error {
     case unknown
     case unableToParse
     case requestFailed
+    case invalidEndpointUrl
 }

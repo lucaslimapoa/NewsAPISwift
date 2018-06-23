@@ -125,7 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				4CF4CF6E20DCA34B001B00F1 /* Parameters */,
-				4CF4CF6120DCA13D001B00F1 /* NewsAPI Target */,
+				4CF4CF6120DCA13D001B00F1 /* NewsAPI Service */,
 				4CF4CF5C20DC9A81001B00F1 /* Entities */,
 				4CF4CF7F20DD2C41001B00F1 /* Decoders */,
 				4CF4CF8E20DD55AA001B00F1 /* Provider */,
@@ -171,6 +171,7 @@
 		4CF4CF5420DC954F001B00F1 /* NewsAPI */ = {
 			isa = PBXGroup;
 			children = (
+				4CF4CF5A20DC9A39001B00F1 /* Result.swift */,
 				4CF4CF5F20DC9B23001B00F1 /* NewsAPIError.swift */,
 				4CF4CF5520DC955F001B00F1 /* NewsAPI.swift */,
 			);
@@ -185,14 +186,13 @@
 			path = Entities;
 			sourceTree = "<group>";
 		};
-		4CF4CF6120DCA13D001B00F1 /* NewsAPI Target */ = {
+		4CF4CF6120DCA13D001B00F1 /* NewsAPI Service */ = {
 			isa = PBXGroup;
 			children = (
 				4CF4CF6920DCA1DA001B00F1 /* APITargetType.swift */,
-				4CF4CF5A20DC9A39001B00F1 /* Result.swift */,
 				4CF4CF5720DC99AF001B00F1 /* NewsAPITarget.swift */,
 			);
-			path = "NewsAPI Target";
+			path = "NewsAPI Service";
 			sourceTree = "<group>";
 		};
 		4CF4CF6E20DCA34B001B00F1 /* Parameters */ = {

@@ -22,7 +22,7 @@ class NewsProvider {
     @discardableResult
     func request(_ target: NewsAPITarget, completion: NewsProviderRequestCallback?) -> URLSessionDataTask? {
         guard let urlRequest = makeUrlRequest(with: target) else {
-            completion?(nil, .unknown)
+            completion?(nil, .invalidEndpointUrl)
             return nil
         }
         
