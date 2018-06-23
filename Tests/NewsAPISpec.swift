@@ -16,18 +16,16 @@ class NewsAPISpec: QuickSpec {
     override func spec() {
         var newsAPI: NewsAPI!
         var newsProviderMock: NewsProviderMock!
+        var sourceDecoderMock: NewsSourceDecoderMock!
         
         beforeEach {
             newsProviderMock = NewsProviderMock(apiKey: "someKey")
-            newsAPI = NewsAPI(provider: newsProviderMock)
+            sourceDecoderMock = NewsSourceDecoderMock()
+            newsAPI = NewsAPI(provider: newsProviderMock, sourceDecoder: sourceDecoderMock)
         }
         
         describe("Sources Request") {
-            context("Get All Sources") {
-                beforeEach {
-                    newsProviderMock.requestStub = (Fakes.Sources.successJsonData, nil)
-                }
-                
+            context("Requests All Sources") {
                 it("Calls NewsProvider Correctly") {
                     newsAPI.getSources() { _ in }
                     let requestTarget = newsProviderMock.requestParams!.target
@@ -36,8 +34,16 @@ class NewsAPISpec: QuickSpec {
                         fail("Wrong parameters passed")
                     }
                 }
+            }
+            
+            context("Successfully Gets Sources") {
+                beforeEach {
+                    newsProviderMock.requestStub = (Fakes.Sources.successJsonData, nil)
+                }
                 
                 it("Returns All Sources") {
+                    sourceDecoderMock.decodeStub = [Fakes.Sources.source]
+                    
                     waitUntil(timeout: 1.0) { success in
                         newsAPI.getSources() { result in
                             switch result {
@@ -52,7 +58,32 @@ class NewsAPISpec: QuickSpec {
                     }
                 }
             }
+            
+            context("Fails To Decode Sources") {
+                it("Returns Unable To Parse Error") {
+                    sourceDecoderMock.error = .unableToParse
+                    
+                    newsAPI.getSources() { result in
+                        if case .failure(.unableToParse) = result { } else {
+                            fail("Wrong Error")
+                        }
+                    }
+                }
+            }
         }
+    }
+}
+
+private class NewsSourceDecoderMock: NewsSourceDecoder {
+    var error: NewsAPIError?
+    var decodeStub = [NewsSource]()
+    
+    override func decode(data: Data) throws -> [NewsSource] {
+        if let error = error {
+            throw error
+        }
+        
+        return decodeStub
     }
 }
 

@@ -12,13 +12,16 @@ public typealias NewsAPISourceRequest = ((Result<[NewsSource], NewsAPIError>) ->
 
 public class NewsAPI {
     private let provider: NewsProvider
+    private let sourceDecoder: NewsSourceDecoder
     
     public init(apiKey: String) {
         self.provider = NewsProvider(apiKey: apiKey)
+        self.sourceDecoder = NewsSourceDecoder()
     }
     
-    init(provider: NewsProvider) {
+    init(provider: NewsProvider, sourceDecoder: NewsSourceDecoder) {
         self.provider = provider
+        self.sourceDecoder = sourceDecoder
     }
     
     @discardableResult
@@ -30,7 +33,7 @@ public class NewsAPI {
             }
             
             do {
-                let sources = try NewsSourceDecoder().decode(data: data)
+                let sources = try self.sourceDecoder.decode(data: data)
                 completion(.success(sources))
             } catch let error {
                 let newsAPIError = (error as? NewsAPIError) ?? .unknown
