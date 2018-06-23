@@ -8,7 +8,7 @@
 
 import Foundation
 
-public typealias NewsAPISourceRequest = ((Result<[NewsSource], NewsAPIError>) -> ())
+public typealias NewsAPIRequest<T> = ((Result<[T], NewsAPIError>) -> ())
 
 public class NewsAPI {
     private let provider: NewsProvider
@@ -25,7 +25,7 @@ public class NewsAPI {
     }
     
     @discardableResult
-    public func getSources(category: NewsCategory = .all, language: NewsLanguage = .all, country: NewsCountry = .all, completion: @escaping NewsAPISourceRequest) -> URLSessionDataTask? {
+    public func getSources(category: NewsCategory = .all, language: NewsLanguage = .all, country: NewsCountry = .all, completion: @escaping NewsAPIRequest<NewsSource>) -> URLSessionDataTask? {
         return provider.request(.sources(category: category, language: language, country: country)) { data, error in
             guard let data = data else {
                 completion(.failure(error ?? .unknown))
