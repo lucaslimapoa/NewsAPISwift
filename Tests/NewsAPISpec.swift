@@ -89,9 +89,9 @@ private class NewsSourceDecoderMock: NewsSourceDecoder {
 
 private class NewsProviderMock: NewsProvider {
     var requestStub: (data: Data?, error: NewsAPIError?) = (Data(), nil)
-    var requestParams: (target: NewsAPITarget, completion: NewsProviderRequestCallback?)?
+    var requestParams: (target: NewsAPITarget, completion: NewsProviderRequestHandler?)?
     
-    override func request(_ target: NewsAPITarget, completion: NewsProviderRequestCallback?) -> URLSessionDataTask? {
+    override func request(_ target: NewsAPITarget, completion: NewsProviderRequestHandler?) -> URLSessionDataTask? {
         requestParams = (target, completion)
         completion?(requestStub.data, requestStub.error)
         
