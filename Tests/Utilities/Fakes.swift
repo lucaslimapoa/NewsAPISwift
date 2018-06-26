@@ -69,7 +69,7 @@ extension Fakes {
         
         static let source = NewsSource(id: "source-id",
                                           name: "Source",
-                                          description: "Source Description",
+                                          sourceDescription: "Source Description",
                                           url: URL(string: "http://source.com")!,
                                           category: .general,
                                           language: .en,

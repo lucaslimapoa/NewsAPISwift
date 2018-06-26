@@ -11,22 +11,32 @@ import Foundation
 public struct NewsSource: Equatable, Decodable {
     public let id: String
     public let name: String
-    public let description: String
+    public let sourceDescription: String
     public let url: URL
     public let category: NewsCategory
     public let language: NewsLanguage
     public let country: NewsCountry
     
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case sourceDescription = "description"
+        case url
+        case category
+        case language
+        case country
+    }
+    
     public init(id: String,
                 name: String,
-                description: String,
+                sourceDescription: String,
                 url: URL,
                 category: NewsCategory,
                 language: NewsLanguage,
                 country: NewsCountry) {
         self.id = id
         self.name = name
-        self.description = description
+        self.sourceDescription = sourceDescription
         self.url = url
         self.category = category
         self.language = language

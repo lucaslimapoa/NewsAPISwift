@@ -71,6 +71,27 @@ class NewsAPISpec: QuickSpec {
                 }
             }
         }
+        
+        describe("Top Headlines Request") {
+            context("Successfully Gets Top Headlines") {
+                it("Returns Top Headlines") {
+                    sourceDecoderMock.decodeStub = [Fakes.Sources.source]
+                    
+                    waitUntil(timeout: 1.0) { success in
+                        newsAPI.getSources() { result in
+                            switch result {
+                            case .success(let sources):
+                                expect(sources.count) == 1
+                                expect(sources.first) == Fakes.Sources.source
+                                success()
+                            case .failure(_):
+                                fail()
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
