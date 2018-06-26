@@ -9,7 +9,7 @@
 import Foundation
 
 class NewsAPIDecoder {
-    func decode<T: Decodable>(data: Data, type: T.Type) throws -> [T] {
+    func decode<T: Decodable>(data: Data) throws -> [T] {
         let jsonDecoder = JSONDecoder()
         jsonDecoder.dateDecodingStrategy = .iso8601
         
@@ -19,11 +19,11 @@ class NewsAPIDecoder {
             throw NewsAPIError.serviceError(code: code, message: message)
         }
         
-        if type == NewsSource.self, let sources = response?.sources as? [T] {
+        if let sources = response?.sources as? [T] {
             return sources
         }
         
-        if type == NewsArticle.self, let articles = response?.articles as? [T] {
+        if let articles = response?.articles as? [T] {
             return articles
         }
         
@@ -35,7 +35,6 @@ private struct NewsResponse: Decodable {
     let status: String
     let code: String?
     let message: String?
-    let totalResults: Int?
     let sources: [NewsSource]?
     let articles: [NewsArticle]?
 }

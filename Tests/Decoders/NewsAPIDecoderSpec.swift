@@ -22,7 +22,7 @@ class NewsAPIDecoderSpec: QuickSpec {
         describe("Source JSON Decoding") {
             context("When Server Error Response") {
                 it("Throws Service Error") {
-                    expect { try decoder.decode(data: Fakes.NewsAPI.noApiKeyErrorJsonData, type: NewsSource.self) }
+                    expect { try decoder.decode(data: Fakes.NewsAPI.noApiKeyErrorJsonData) as [NewsSource] }
                     .to(throwError(NewsAPIError.serviceError(code: "apiKeyMissing",
                                                                  message: "Your API key is missing. Append this to the URL with the apiKey param, or use the x-api-key HTTP header.")))
                 }
@@ -30,21 +30,21 @@ class NewsAPIDecoderSpec: QuickSpec {
             
             context("When Valid Data") {
                 it("Returns Sources") {
-                    expect { try decoder.decode(data: Fakes.Sources.successJsonData, type: NewsSource.self) }
+                    expect { try decoder.decode(data: Fakes.Sources.successJsonData) as [NewsSource] }
                         == [Fakes.Sources.source]
                 }
             }
             
             context("When Invalid Data") {
                 it("Throws Unable To Parse Error") {
-                    expect { try decoder.decode(data: Fakes.Sources.invalidJsonData, type: NewsSource.self) }
+                    expect { try decoder.decode(data: Fakes.Sources.invalidJsonData) as [NewsSource] }
                         .to(throwError(NewsAPIError.unableToParse))
                 }
             }
             
             context("When Empty Data") {
                 it("Throws Unable To Parse Error") {
-                    expect { try decoder.decode(data: Fakes.Sources.emptyJsonData, type: NewsSource.self) }
+                    expect { try decoder.decode(data: Fakes.Sources.emptyJsonData) as [NewsSource] }
                         == []
                 }
             }
@@ -53,7 +53,7 @@ class NewsAPIDecoderSpec: QuickSpec {
         describe("Article JSON Decoding") {
             context("When Valid Data") {
                 it("Returns Articles") {
-                    expect { try decoder.decode(data: Fakes.TopHeadlines.successTopHeadlinesJsonData, type: NewsArticle.self) }
+                    expect { try decoder.decode(data: Fakes.TopHeadlines.successTopHeadlinesJsonData) as [NewsArticle] }
                         == [Fakes.TopHeadlines.topHeadline1]
                 }
             }

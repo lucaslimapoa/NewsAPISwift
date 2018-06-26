@@ -120,7 +120,7 @@ private class NewsSourceDecoderMock: NewsAPIDecoder {
     var sourceDecodeStub: [NewsSource]?
     var headlinesDecodeStub: [NewsArticle]?
     
-    override func decode<T: Decodable>(data: Data, type: T.Type) throws -> [T] {
+    override func decode<T: Decodable>(data: Data) throws -> [T] {
         if let error = error {
             throw error
         }

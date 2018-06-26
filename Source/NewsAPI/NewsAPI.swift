@@ -53,7 +53,7 @@ private extension NewsAPI {
             }
             
             do {
-                let result: [T] = try self.decoder.decode(data: data, type: T.self)
+                let result: [T] = try self.decoder.decode(data: data)
                 completion(.success(result))
             } catch let error {
                 let newsAPIError = (error as? NewsAPIError) ?? .unknown
