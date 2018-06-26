@@ -17,9 +17,6 @@ class NewsProviderSpec: QuickSpec {
         var urlSessionMock: URLSessionMock!
         var newsProvider: NewsProvider!
         
-        let allSourcesTarget = NewsAPITarget.sources(category: .all, language: .all, country: .all)
-        let allTopHeadlines = NewsAPITarget.topHeadlines(q: nil, sources: nil, category: .all, language: .all, country: .all, pageSize: nil, page: nil)
-        
         afterEach {
             NetworkStub.removeAllStubs()
         }
@@ -31,15 +28,15 @@ class NewsProviderSpec: QuickSpec {
             }
             
             it("Has X-Api-Key Header") {
-                newsProvider.request(allSourcesTarget, completion: nil)
+                newsProvider.request(Fakes.NewsAPITarget.allSourcesTarget, completion: nil)
                 expect(urlSessionMock.dataTask?.request.value(forHTTPHeaderField: "X-Api-Key")) == "someKey"
                 
-                newsProvider.request(allTopHeadlines, completion: nil)
+                newsProvider.request(Fakes.NewsAPITarget.allTopHeadlines, completion: nil)
                 expect(urlSessionMock.dataTask?.request.value(forHTTPHeaderField: "X-Api-Key")) == "someKey"
             }
             
             it("Resumes Data Task") {
-                let dataTask = newsProvider.request(allSourcesTarget, completion: nil)
+                let dataTask = newsProvider.request(Fakes.NewsAPITarget.allSourcesTarget, completion: nil)
                     as! URLSessionDataTaskMock
                 
                 expect(dataTask.resumeCalled) == true
@@ -56,7 +53,7 @@ class NewsProviderSpec: QuickSpec {
                     NetworkStub.installSuccessfulRequest(data: Fakes.Sources.successJsonData)
                     
                     waitUntil(timeout: 1.0) { success in
-                        newsProvider.request(allSourcesTarget) { data, error in
+                        newsProvider.request(Fakes.NewsAPITarget.allSourcesTarget) { data, error in
                             expect(data) == Fakes.Sources.successJsonData
                             expect(error).to(beNil())
                             success()
@@ -70,7 +67,7 @@ class NewsProviderSpec: QuickSpec {
                     NetworkStub.installFailureRequest()
                     
                     waitUntil(timeout: 1.0) { success in
-                        newsProvider.request(allSourcesTarget) { data, error in
+                        newsProvider.request(Fakes.NewsAPITarget.allSourcesTarget) { data, error in
                             expect(data).to(beNil())
                             if case .requestFailed = error! {
                                 success()
@@ -93,7 +90,7 @@ class NewsProviderSpec: QuickSpec {
                     NetworkStub.installSuccessfulRequest(data: Fakes.TopHeadlines.successTopHeadlinesJsonData)
                     
                     waitUntil(timeout: 1.0) { success in
-                        newsProvider.request(allTopHeadlines) { data, error in
+                        newsProvider.request(Fakes.NewsAPITarget.allTopHeadlines) { data, error in
                             expect(data) == Fakes.TopHeadlines.successTopHeadlinesJsonData
                             expect(error).to(beNil())
                             success()
@@ -107,7 +104,7 @@ class NewsProviderSpec: QuickSpec {
                     NetworkStub.installFailureRequest()
                     
                     waitUntil(timeout: 1.0) { success in
-                        newsProvider.request(allTopHeadlines) { data, error in
+                        newsProvider.request(Fakes.NewsAPITarget.allTopHeadlines) { data, error in
                             expect(data).to(beNil())
                             if case .requestFailed = error! {
                                 success()

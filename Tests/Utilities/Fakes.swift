@@ -7,7 +7,8 @@
 //
 
 import Foundation
-import NewsAPISwift
+
+@testable import NewsAPISwift
 
 struct Fakes {
     struct NewsAPI {
@@ -19,6 +20,13 @@ struct Fakes {
             "message": "Your API key is missing. Append this to the URL with the apiKey param, or use the x-api-key HTTP header."
         }
         """.data(using: .utf8)!
+    }
+}
+
+extension Fakes {
+    struct NewsAPITarget {
+        static let allSourcesTarget = NewsAPISwift.NewsAPITarget.sources(category: .all, language: .all, country: .all)
+        static let allTopHeadlines = NewsAPISwift.NewsAPITarget.topHeadlines(q: nil, sources: nil, category: .all, language: .all, country: .all, pageSize: nil, page: nil)
     }
 }
 
