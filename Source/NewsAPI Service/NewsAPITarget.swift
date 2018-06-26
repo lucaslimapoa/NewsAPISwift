@@ -10,6 +10,7 @@ import Foundation
 
 public enum NewsAPITarget {
     case sources(category: NewsCategory, language: NewsLanguage, country: NewsCountry)
+    case topHeadlines(q: String?, sources: [String]?, category: NewsCategory, language: NewsLanguage, country: NewsCountry, pageSize: Int?, page: Int?)
 }
 
 extension NewsAPITarget: APITargetType {
@@ -21,6 +22,8 @@ extension NewsAPITarget: APITargetType {
         switch self {
         case .sources(_, _, _):
             return "/v2/sources"
+        default:
+            return ""
         }
     }
     
@@ -28,6 +31,8 @@ extension NewsAPITarget: APITargetType {
         switch self {
         case let .sources(category, language, country):
             return makeSourceParameters(category: category, language: language, country: country)
+        default:
+            return [:]
         }
     }
     
@@ -35,6 +40,8 @@ extension NewsAPITarget: APITargetType {
         switch self {
         case .sources(_, _, _):
             return makeSourceEndpoint(baseUrl: self.baseUrl, path: self.path, parameters: self.parameters)
+        default:
+            return nil
         }
     }
 }

@@ -43,7 +43,18 @@ public class NewsAPI {
     }
     
     @discardableResult
-    public func getTopHeadlines(completion: @escaping NewsAPIRequestHandler<NewsArticle>) -> URLSessionDataTask? {
+    public func getTopHeadlines(q: String? = nil,
+                                sources: [String]? = nil,
+                                category: NewsCategory = .all,
+                                language: NewsLanguage = .all,
+                                country: NewsCountry = .all,
+                                pageSize: Int? = nil,
+                                page: Int? = nil,
+                                completion: @escaping NewsAPIRequestHandler<NewsArticle>) -> URLSessionDataTask? {
+        provider.request(.topHeadlines(q: q, sources: sources, category: category, language: language, country: country, pageSize: pageSize, page: page)) { data, error in
+            
+        }
+        
         let mockArticle = NewsArticle(source: NewsArticle.NewsSource(id: nil, name: "source 1"),
                                       author: "Source 1 Author",
                                       title: "Source 1",

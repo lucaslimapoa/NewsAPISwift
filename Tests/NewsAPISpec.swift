@@ -73,6 +73,30 @@ class NewsAPISpec: QuickSpec {
         }
         
         describe("Top Headlines Request") {
+            describe("Calls NewsProvider TopHeadlines")  {
+                it("Passes Parameters Correctly") {
+                    newsAPI.getTopHeadlines(q: "test",
+                                            sources: ["source-1"],
+                                            category: .general,
+                                            language: .en,
+                                            country: .us,
+                                            pageSize: 20,
+                                            page: 1) { _ in }
+                    let requestTarget = newsProviderMock.requestParams!.target
+                    
+                    if case .topHeadlines(q: "test",
+                                          sources: ["source-1"],
+                                          category: .general,
+                                          language: .en,
+                                          country: .us,
+                                          pageSize: 20,
+                                          page: 1
+                    ) = requestTarget { } else {
+                        fail("Wrong parameters passed")
+                    }
+                }
+            }
+            
             context("Successfully Gets Top Headlines") {
                 it("Returns Top Headlines") {                    
                     waitUntil(timeout: 1.0) { success in
