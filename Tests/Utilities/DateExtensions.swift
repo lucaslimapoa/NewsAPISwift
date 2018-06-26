@@ -10,9 +10,7 @@ import Foundation
 
 extension Date {
     init(string: String) {
-        let formatter = ISO8601DateFormatter()
-        formatter.formatOptions = [.withFractionalSeconds]
-        
+        let formatter = ISO8601DateFormatter()        
         self = formatter.date(from: string)!
     }
 }

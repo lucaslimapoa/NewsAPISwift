@@ -16,12 +16,13 @@ class NewsAPISpec: QuickSpec {
     override func spec() {
         var newsAPI: NewsAPI!
         var newsProviderMock: NewsProviderMock!
-        var sourceDecoderMock: NewsSourceDecoderMock!
+        var decoderMock: NewsSourceDecoderMock!
         
         beforeEach {
             newsProviderMock = NewsProviderMock(apiKey: "someKey")
-            sourceDecoderMock = NewsSourceDecoderMock()
-            newsAPI = NewsAPI(provider: newsProviderMock, sourceDecoder: sourceDecoderMock)
+            decoderMock = NewsSourceDecoderMock()
+            
+            newsAPI = NewsAPI(provider: newsProviderMock, sourceDecoder: decoderMock)
         }
         
         describe("Sources Request") {
@@ -36,13 +37,9 @@ class NewsAPISpec: QuickSpec {
                 }
             }
             
-            context("Successfully Gets Sources") {
-                beforeEach {
-                    newsProviderMock.requestStub = (Fakes.Sources.successJsonData, nil)
-                }
-                
+            context("Successfully Gets Sources") {                
                 it("Returns All Sources") {
-                    sourceDecoderMock.decodeStub = [Fakes.Sources.source]
+                    decoderMock.sourceDecodeStub = [Fakes.Sources.source]
                     
                     waitUntil(timeout: 1.0) { success in
                         newsAPI.getSources() { result in
@@ -61,7 +58,7 @@ class NewsAPISpec: QuickSpec {
             
             context("Fails To Decode Sources") {
                 it("Returns Unable To Parse Error") {
-                    sourceDecoderMock.error = .unableToParse
+                    decoderMock.error = .unableToParse
                     
                     newsAPI.getSources() { result in
                         if case .failure(.unableToParse) = result { } else {
@@ -90,15 +87,16 @@ class NewsAPISpec: QuickSpec {
                                           language: .en,
                                           country: .us,
                                           pageSize: 20,
-                                          page: 1
-                    ) = requestTarget { } else {
+                                          page: 1) = requestTarget { } else {
                         fail("Wrong parameters passed")
                     }
                 }
             }
             
             context("Successfully Gets Top Headlines") {
-                it("Returns Top Headlines") {                    
+                it("Returns Top Headlines") {
+                    decoderMock.headlinesDecodeStub = [Fakes.TopHeadlines.topHeadline1]
+                    
                     waitUntil(timeout: 1.0) { success in
                         newsAPI.getTopHeadlines() { result in
                             switch result {
@@ -117,13 +115,24 @@ class NewsAPISpec: QuickSpec {
     }
 }
 
-private class NewsSourceDecoderMock: NewsSourceDecoder {
+private class NewsSourceDecoderMock: NewsAPIDecoder {
     var error: NewsAPIError?
-    var decodeStub = [NewsSource]()
+    var sourceDecodeStub: [NewsSource]?
+    var headlinesDecodeStub: [NewsArticle]?
     
-    override func decode(data: Data) throws -> [NewsSource] {
+    override func decode<T: Decodable>(data: Data, type: T.Type) throws -> [T] {
         if let error = error {
             throw error
+        }
+        
+        let decodeStub: [T]
+        
+        if let sourceDecodeStub = sourceDecodeStub {
+            decodeStub = sourceDecodeStub.map { $0 as! T}
+        } else if let headlinesDecodeStub = headlinesDecodeStub {
+            decodeStub = headlinesDecodeStub.map { $0 as! T}
+        } else {
+            decodeStub = []
         }
         
         return decodeStub
@@ -131,12 +140,11 @@ private class NewsSourceDecoderMock: NewsSourceDecoder {
 }
 
 private class NewsProviderMock: NewsProvider {
-    var requestStub: (data: Data?, error: NewsAPIError?) = (Data(), nil)
     var requestParams: (target: NewsAPITarget, completion: NewsProviderRequestHandler?)?
     
     override func request(_ target: NewsAPITarget, completion: NewsProviderRequestHandler?) -> URLSessionDataTask? {
         requestParams = (target, completion)
-        completion?(requestStub.data, requestStub.error)
+        completion?(Data(), nil)
         
         return URLSessionDataTask()
     }
