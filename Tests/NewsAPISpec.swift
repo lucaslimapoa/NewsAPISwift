@@ -74,15 +74,13 @@ class NewsAPISpec: QuickSpec {
         
         describe("Top Headlines Request") {
             context("Successfully Gets Top Headlines") {
-                it("Returns Top Headlines") {
-                    sourceDecoderMock.decodeStub = [Fakes.Sources.source]
-                    
+                it("Returns Top Headlines") {                    
                     waitUntil(timeout: 1.0) { success in
-                        newsAPI.getSources() { result in
+                        newsAPI.getTopHeadlines() { result in
                             switch result {
-                            case .success(let sources):
-                                expect(sources.count) == 1
-                                expect(sources.first) == Fakes.Sources.source
+                            case .success(let articles):
+                                expect(articles.count) == 1
+                                expect(articles.first) == Fakes.TopHeadlines.topHeadline1
                                 success()
                             case .failure(_):
                                 fail()

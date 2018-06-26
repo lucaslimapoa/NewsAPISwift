@@ -41,4 +41,27 @@ public class NewsAPI {
             }
         }
     }
+    
+    @discardableResult
+    public func getTopHeadlines(completion: @escaping NewsAPIRequestHandler<NewsArticle>) -> URLSessionDataTask? {
+        let mockArticle = NewsArticle(source: NewsArticle.NewsSource(id: nil, name: "source 1"),
+                                      author: "Source 1 Author",
+                                      title: "Source 1",
+                                      articleDescription: "Source 1 Description",
+                                      url: URL(string: "https://www.source1.com")!,
+                                      urlToImage: URL(string: "https://www.source1.com/source01.jpg"),
+                                      publishedAt: Date(string: "2018-06-26T12:57:43Z"))
+        completion(.success([mockArticle]))
+        
+        return URLSessionDataTask()
+    }
+}
+
+private extension Date {
+    init(string: String) {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withFractionalSeconds]
+        
+        self = formatter.date(from: string)!
+    }
 }
