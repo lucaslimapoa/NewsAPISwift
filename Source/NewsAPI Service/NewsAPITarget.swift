@@ -41,7 +41,7 @@ extension NewsAPITarget: APITargetType {
         case .sources(_, _, _):
             return makeSourceEndpoint(baseUrl: self.baseUrl, path: self.path, parameters: self.parameters)
         default:
-            return nil
+            return URL(string: "http://newsapi.org")!
         }
     }
 }

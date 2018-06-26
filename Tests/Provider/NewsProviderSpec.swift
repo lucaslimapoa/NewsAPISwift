@@ -18,6 +18,11 @@ class NewsProviderSpec: QuickSpec {
         var newsProvider: NewsProvider!
         
         let allSourcesTarget = NewsAPITarget.sources(category: .all, language: .all, country: .all)
+        let allTopHeadlines = NewsAPITarget.topHeadlines(q: nil, sources: nil, category: .all, language: .all, country: .all, pageSize: nil, page: nil)
+        
+        afterEach {
+            NetworkStub.removeAllStubs()
+        }
         
         describe("Request") {
             beforeEach {
@@ -27,10 +32,10 @@ class NewsProviderSpec: QuickSpec {
             
             it("Has X-Api-Key Header") {
                 newsProvider.request(allSourcesTarget, completion: nil)
+                expect(urlSessionMock.dataTask?.request.value(forHTTPHeaderField: "X-Api-Key")) == "someKey"
                 
-                let request = urlSessionMock.dataTask?.request
-                
-                expect(request?.value(forHTTPHeaderField: "X-Api-Key")) == "someKey"
+                newsProvider.request(allTopHeadlines, completion: nil)
+                expect(urlSessionMock.dataTask?.request.value(forHTTPHeaderField: "X-Api-Key")) == "someKey"
             }
             
             it("Resumes Data Task") {
@@ -49,10 +54,10 @@ class NewsProviderSpec: QuickSpec {
             context("Successful") {
                 it("Returns Data") {
                     NetworkStub.installSuccessfulRequest(data: Fakes.Sources.successJsonData)
-                        
+                    
                     waitUntil(timeout: 1.0) { success in
                         newsProvider.request(allSourcesTarget) { data, error in
-                            expect(data).toNot(beNil())
+                            expect(data) == Fakes.Sources.successJsonData
                             expect(error).to(beNil())
                             success()
                         }
@@ -66,6 +71,43 @@ class NewsProviderSpec: QuickSpec {
                     
                     waitUntil(timeout: 1.0) { success in
                         newsProvider.request(allSourcesTarget) { data, error in
+                            expect(data).to(beNil())
+                            if case .requestFailed = error! {
+                                success()
+                            } else {
+                                fail("Wrong Error Returned")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        describe("Requests Top Headlines") {
+            beforeEach {
+                newsProvider = NewsProvider(apiKey: "someKey")
+            }
+            
+            context("Successful") {
+                it("Returns Data") {
+                    NetworkStub.installSuccessfulRequest(data: Fakes.TopHeadlines.successTopHeadlinesJsonData)
+                    
+                    waitUntil(timeout: 1.0) { success in
+                        newsProvider.request(allTopHeadlines) { data, error in
+                            expect(data) == Fakes.TopHeadlines.successTopHeadlinesJsonData
+                            expect(error).to(beNil())
+                            success()
+                        }
+                    }
+                }
+            }
+            
+            context("Error") {
+                it("Returns Error") {
+                    NetworkStub.installFailureRequest()
+                    
+                    waitUntil(timeout: 1.0) { success in
+                        newsProvider.request(allTopHeadlines) { data, error in
                             expect(data).to(beNil())
                             if case .requestFailed = error! {
                                 success()

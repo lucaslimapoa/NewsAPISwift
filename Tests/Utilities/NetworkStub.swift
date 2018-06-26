@@ -23,4 +23,8 @@ struct NetworkStub {
             return OHHTTPStubsResponse(error: NSError(domain: NSURLErrorDomain, code: 500, userInfo: nil))
         }
     }
+    
+    static func removeAllStubs() {
+        OHHTTPStubs.removeAllStubs()
+    }
 }
