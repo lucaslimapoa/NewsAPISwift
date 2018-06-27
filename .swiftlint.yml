@@ -1,2 +1,6 @@
 included:
   - Source
+
+identifier_name:
+  excluded:
+    - q

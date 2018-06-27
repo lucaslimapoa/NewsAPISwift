@@ -26,6 +26,3 @@ jobs:
       script: fastlane lint
     - stage: test
       script: fastlane tests
-
-after_success:
- - bash <(curl -s https://codecov.io/bash)
