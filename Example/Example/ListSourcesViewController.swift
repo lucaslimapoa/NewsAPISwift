@@ -38,15 +38,24 @@ class ListSourcesViewController: UITableViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let articlesViewController = UIStoryboard(name: "Main", bundle: nil)
-            .instantiateViewController(withIdentifier: "ListArticlesViewController") as! ListArticlesViewController
-        
-        articlesViewController.newsAPI = newsAPI
-        articlesViewController.source = sources[indexPath.row]
-        
-        navigationController?.pushViewController(articlesViewController, animated: true)
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.destination is ListArticlesViewController {
+            let articlesViewController = segue.destination as! ListArticlesViewController
+            
+            articlesViewController.newsAPI = newsAPI
+            articlesViewController.source = sources[tableView.indexPathForSelectedRow!.row]
+        }
     }
+    
+//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        let articlesViewController = UIStoryboard(name: "Main", bundle: nil)
+//            .instantiateViewController(withIdentifier: "ListArticlesViewController") as! ListArticlesViewController
+//
+//        articlesViewController.newsAPI = newsAPI
+//        articlesViewController.source = sources[indexPath.row]
+//
+//        navigationController?.pushViewController(articlesViewController, animated: true)
+//    }
     
     // MARK: - Table view data source
 
