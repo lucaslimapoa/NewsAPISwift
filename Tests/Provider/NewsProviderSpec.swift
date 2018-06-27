@@ -28,7 +28,7 @@ class NewsProviderSpec: QuickSpec {
             }
             
             it("Has X-Api-Key Header") {
-                newsProvider.request(Fakes.NewsAPITarget.allSourcesTarget, completion: nil)
+                newsProvider.request(Fakes.NewsAPITarget.allSources, completion: nil)
                 expect(urlSessionMock.dataTask?.request.value(forHTTPHeaderField: "X-Api-Key")) == "someKey"
                 
                 newsProvider.request(Fakes.NewsAPITarget.allTopHeadlines, completion: nil)
@@ -36,7 +36,7 @@ class NewsProviderSpec: QuickSpec {
             }
             
             it("Resumes Data Task") {
-                let dataTask = newsProvider.request(Fakes.NewsAPITarget.allSourcesTarget, completion: nil)
+                let dataTask = newsProvider.request(Fakes.NewsAPITarget.allSources, completion: nil)
                     as! URLSessionDataTaskMock
                 
                 expect(dataTask.resumeCalled) == true
@@ -53,7 +53,7 @@ class NewsProviderSpec: QuickSpec {
                     NetworkStub.installSuccessfulRequest(data: Fakes.Sources.successJsonData)
                     
                     waitUntil(timeout: 1.0) { success in
-                        newsProvider.request(Fakes.NewsAPITarget.allSourcesTarget) { data, error in
+                        newsProvider.request(Fakes.NewsAPITarget.allSources) { data, error in
                             expect(data) == Fakes.Sources.successJsonData
                             expect(error).to(beNil())
                             success()
@@ -67,7 +67,7 @@ class NewsProviderSpec: QuickSpec {
                     NetworkStub.installFailureRequest()
                     
                     waitUntil(timeout: 1.0) { success in
-                        newsProvider.request(Fakes.NewsAPITarget.allSourcesTarget) { data, error in
+                        newsProvider.request(Fakes.NewsAPITarget.allSources) { data, error in
                             expect(data).to(beNil())
                             if case .requestFailed = error! {
                                 success()

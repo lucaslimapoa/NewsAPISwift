@@ -15,19 +15,19 @@ class NewsAPITargetSpec: QuickSpec {
     override func spec() {
         describe("NewsAPI") {
             it("baseUrl") {
-                expect(NewsAPITarget.sources(category: .all, language: .all, country: .all).baseUrl) == "https://newsapi.org"
+                expect(Fakes.NewsAPITarget.allSources.baseUrl) == "https://newsapi.org"
             }
         }
         
         describe("Sources") {
             it("Has Path") {
-                expect(NewsAPITarget.sources(category: .all, language: .all, country: .all).path) == "/v2/sources"
+                expect(Fakes.NewsAPITarget.allSources.path) == "/v2/sources"
             }
             
             describe("Parameters") {
                 context("When All Parameters Are All") {
                     it("Returns All Parameters") {
-                        expect(NewsAPITarget.sources(category: .all, language: .all, country: .all).parameters)
+                        expect(Fakes.NewsAPITarget.allSources.parameters)
                             == [:]
                     }
                 }
@@ -36,13 +36,6 @@ class NewsAPITargetSpec: QuickSpec {
                     it("Returns General Category") {
                         expect(NewsAPITarget.sources(category: .general, language: .all, country: .all).parameters)
                             == ["category": "general"]
-                    }
-                }
-                
-                context("When Language Is English") {
-                    it("Returns English Language") {
-                        expect(NewsAPITarget.sources(category: .all, language: .en, country: .all).parameters)
-                            == ["language": "en"]
                     }
                 }
                 
@@ -109,6 +102,92 @@ class NewsAPITargetSpec: QuickSpec {
                             expect(query?.contains("language=en")) == true
                             expect(query?.contains("country=us")) == true
                         }
+                    }
+                }
+            }
+        }
+        
+        
+        describe("Top Headlines") {
+            it("Has Path") {
+                expect(Fakes.NewsAPITarget.allTopHeadlines.path) == "/v2/top-headlines"
+            }
+            
+            describe("Parameters") {
+                context("When All Parameters Are Default") {
+                    it("Returns All Parameters") {
+                        expect(Fakes.NewsAPITarget.allTopHeadlines.parameters)
+                            == [:]
+                    }
+                }
+                
+                it("Sets Q Parameter When Available") {
+                    let allTopHeadlines = NewsAPITarget.topHeadlines(q: "q", sources: nil, category: .all, language: .all, country: .all, pageSize: nil, page: nil)
+                    expect(allTopHeadlines.parameters)
+                        == ["q": "q"]
+                }
+                
+                it("Sets Category Parameter When Not .all") {
+                    let topHeadlines = NewsAPITarget.topHeadlines(q: nil, sources: nil, category: .general, language: .all, country: .all, pageSize: nil, page: nil)
+                    expect(topHeadlines.parameters)
+                        == ["category": "general"]
+                }
+                
+                it("Returns Empty When Category Parameter Is .all") {
+                    let topHeadlines = NewsAPITarget.topHeadlines(q: nil, sources: nil, category: .all, language: .all, country: .all, pageSize: nil, page: nil)
+                    expect(topHeadlines.parameters)
+                        == [:]
+                }
+                
+                it("Sets Language Parameter When Not .all") {
+                    let topHeadlines = NewsAPITarget.topHeadlines(q: nil, sources: nil, category: .all, language: .en, country: .all, pageSize: nil, page: nil)
+                    expect(topHeadlines.parameters)
+                        == ["language": "en"]
+                }
+                
+                it("Returns Empty When Language Parameter Is .all") {
+                    let topHeadlines = NewsAPITarget.topHeadlines(q: nil, sources: nil, category: .all, language: .all, country: .all, pageSize: nil, page: nil)
+                    expect(topHeadlines.parameters)
+                        == [:]
+                }
+                
+                it("Sets Country Parameter When Not .all") {
+                    let topHeadlines = NewsAPITarget.topHeadlines(q: nil, sources: nil, category: .all, language: .all, country: .us, pageSize: nil, page: nil)
+                    expect(topHeadlines.parameters)
+                        == ["country": "us"]
+                }
+                
+                it("Returns Empty When Country Parameter Is .all") {
+                    let topHeadlines = NewsAPITarget.topHeadlines(q: nil, sources: nil, category: .all, language: .all, country: .all, pageSize: nil, page: nil)
+                    expect(topHeadlines.parameters)
+                        == [:]
+                }
+                
+                it("Sets Page Size Parameter When Available") {
+                    let topHeadlines = NewsAPITarget.topHeadlines(q: nil, sources: nil, category: .all, language: .all, country: .all, pageSize: 20, page: nil)
+                    expect(topHeadlines.parameters)
+                        == ["pageSize": "20"]
+                }
+                
+                it("Sets Page Parameter When Available") {
+                    let topHeadlines = NewsAPITarget.topHeadlines(q: nil, sources: nil, category: .all, language: .all, country: .all, pageSize: nil, page: 1)
+                    expect(topHeadlines.parameters)
+                        == ["page": "1"]
+                }
+                
+                context("When Sources Parameter Has One Item") {
+                    it("Sets Single Sources Parameter") {
+                        let allTopHeadlines = NewsAPITarget.topHeadlines(q: nil, sources: ["sources"], category: .all, language: .all, country: .all, pageSize: nil, page: nil)
+                        expect(allTopHeadlines.parameters)
+                            == ["sources": "sources"]
+                    }
+                }
+                
+                context("When Sources Parameter Has More Than One Item") {
+                    it("Sets Sources Parameter With Commas") {
+                        let allTopHeadlines = NewsAPITarget.topHeadlines(q: nil, sources: ["sources1", "sources2"], category: .all, language: .all, country: .all, pageSize: nil, page: nil)
+                        expect(allTopHeadlines.parameters)
+                            == ["sources": "sources1,sources2"]
                     }
                 }
             }

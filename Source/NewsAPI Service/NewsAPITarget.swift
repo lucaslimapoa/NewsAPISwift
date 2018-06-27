@@ -22,8 +22,8 @@ extension NewsAPITarget: APITargetType {
         switch self {
         case .sources(_, _, _):
             return "/v2/sources"
-        default:
-            return ""
+        case .topHeadlines(_, _, _, _, _, _, _):
+            return "/v2/top-headlines"
         }
     }
     
@@ -31,8 +31,8 @@ extension NewsAPITarget: APITargetType {
         switch self {
         case let .sources(category, language, country):
             return makeSourceParameters(category: category, language: language, country: country)
-        default:
-            return [:]
+        case let .topHeadlines(q, sources, category, language, country, pageSize, page):
+            return makeTopHeadlinesParameters(q: q, sources: sources, category: category, language: language, country: country, pageSize: pageSize, page: page)
         }
     }
     
@@ -63,7 +63,41 @@ private extension NewsAPITarget {
         }
         
         return parameters
-    }        
+    }
+    
+    func makeTopHeadlinesParameters(q: String?, sources: [String]?, category: NewsCategory, language: NewsLanguage, country: NewsCountry, pageSize: Int?, page: Int?) -> [String: String] {
+        var parameters = [String: String]()
+        
+        if let q = q {
+            parameters["q"] = q
+        }
+        
+        if let sources = sources {
+            parameters["sources"] = sources.joined(separator: ",")
+        }
+        
+        if case .all = category {} else {
+            parameters["category"] = category.rawValue
+        }
+        
+        if case .all = language {} else {
+            parameters["language"] = language.rawValue
+        }
+        
+        if case .all = country {} else {
+            parameters["country"] = country.rawValue
+        }
+        
+        if let pageSize = pageSize {
+            parameters["pageSize"] = String(pageSize)
+        }
+        
+        if let page = page {
+            parameters["page"] = String(page)
+        }
+        
+        return parameters
+    }
 }
 
 private extension NewsAPITarget {

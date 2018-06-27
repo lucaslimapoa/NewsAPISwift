@@ -25,7 +25,7 @@ struct Fakes {
 
 extension Fakes {
     struct NewsAPITarget {
-        static let allSourcesTarget = NewsAPISwift.NewsAPITarget.sources(category: .all, language: .all, country: .all)
+        static let allSources = NewsAPISwift.NewsAPITarget.sources(category: .all, language: .all, country: .all)
         static let allTopHeadlines = NewsAPISwift.NewsAPITarget.topHeadlines(q: nil, sources: nil, category: .all, language: .all, country: .all, pageSize: nil, page: nil)
     }
 }
