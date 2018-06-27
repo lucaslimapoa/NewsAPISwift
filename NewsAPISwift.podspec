@@ -19,7 +19,7 @@ NewsAPISwift is a Swift wrapper around newsapi.org service, which provides artic
   s.author           = { 'Lucas Lima' => 'lucaslimapoa2@gmail.com' }
   s.source           = { :git => 'https://github.com/lucaslimapoa/NewsAPISwift.git', :tag => s.version.to_s }
 
-  s.ios.deployment_target = '10.0'
+  s.ios.deployment_target = '8.0'
 
   s.source_files = 'Source/**/*.swift'
 end
