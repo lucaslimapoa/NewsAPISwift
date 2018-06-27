@@ -23,6 +23,7 @@ public enum NewsCountry: String, Decodable {
     case cz
     case de
     case eg
+    case es
     case fr
     case gb
     case gr
@@ -32,6 +33,7 @@ public enum NewsCountry: String, Decodable {
     case ie
     case il
     case ind = "in"
+    case isl = "is"
     case it
     case jp
     case kr
@@ -47,6 +49,7 @@ public enum NewsCountry: String, Decodable {
     case ph
     case pl
     case pt
+    case pk
     case ro
     case rs
     case ru
@@ -62,4 +65,5 @@ public enum NewsCountry: String, Decodable {
     case us
     case ve
     case za
+    case zh
 }
