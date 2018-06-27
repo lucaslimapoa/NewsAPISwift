@@ -38,10 +38,8 @@ extension NewsAPITarget: APITargetType {
     
     var endpoint: URL? {
         switch self {
-        case .sources(_, _, _):
-            return makeSourceEndpoint(baseUrl: self.baseUrl, path: self.path, parameters: self.parameters)
         default:
-            return URL(string: "http://newsapi.org")!
+            return makeEndpoint(baseUrl: self.baseUrl, path: self.path, parameters: self.parameters)
         }
     }
 }
@@ -101,7 +99,7 @@ private extension NewsAPITarget {
 }
 
 private extension NewsAPITarget {
-    func makeSourceEndpoint(baseUrl: String, path: String, parameters: [String: String]) -> URL? {
+    func makeEndpoint(baseUrl: String, path: String, parameters: [String: String]) -> URL? {
         guard var urlComponents = URLComponents(string: "\(baseUrl)\(path)") else { return nil }
         
         urlComponents.queryItems = parameters.map { name, value in
