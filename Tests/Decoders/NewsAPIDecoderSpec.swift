@@ -57,6 +57,13 @@ class NewsAPIDecoderSpec: QuickSpec {
                         == [Fakes.TopHeadlines.topHeadline1]
                 }
             }
+            
+            context("When Fractional Published Date") {                
+                it("Returns Articles") {
+                    expect { try decoder.decode(data: Fakes.TopHeadlines.fractionalSuccessTopHeadlinesJsonData) as [NewsArticle] }
+                        == [Fakes.TopHeadlines.topHeadlineFractionalDate]
+                }
+            }
         }
     }
 }

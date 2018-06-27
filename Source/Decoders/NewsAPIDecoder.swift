@@ -9,9 +9,23 @@
 import Foundation
 
 class NewsAPIDecoder {
+    lazy private var iso8601: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        
+        return dateFormatter
+    }()
+    
+    lazy private var iso8601mm: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSSZ"
+        
+        return dateFormatter
+    }()
+    
     func decode<T: Decodable>(data: Data) throws -> [T] {
         let jsonDecoder = JSONDecoder()
-        jsonDecoder.dateDecodingStrategy = .iso8601
+        jsonDecoder.dateDecodingStrategy = makeDateDecodingStategy()
         
         let response = try? jsonDecoder.decode(NewsResponse.self, from: data)
         
@@ -28,6 +42,25 @@ class NewsAPIDecoder {
         }
         
         throw NewsAPIError.unableToParse
+    }
+}
+
+private extension NewsAPIDecoder {
+    func makeDateDecodingStategy() -> JSONDecoder.DateDecodingStrategy {
+        return .custom ({ [weak self] decoder in
+            let container = try decoder.singleValueContainer()
+            let dateStr = try container.decode(String.self)
+            
+            if let date = self?.iso8601.date(from: dateStr) {
+                return date
+            }
+            
+            if let date = self?.iso8601mm.date(from: dateStr) {
+                return date
+            }
+            
+            throw NewsAPIError.unableToParse
+        })
     }
 }
 

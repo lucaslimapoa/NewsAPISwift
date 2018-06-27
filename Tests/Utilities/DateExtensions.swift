@@ -8,9 +8,18 @@
 
 import Foundation
 
-extension Date {
-    init(string: String) {
-        let formatter = ISO8601DateFormatter()        
-        self = formatter.date(from: string)!
+extension DateFormatter {
+    static var iso8601: DateFormatter {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        
+        return dateFormatter
+    }
+    
+    static var iso8601mm: DateFormatter {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSSZ"
+        
+        return dateFormatter
     }
 }
