@@ -19,13 +19,13 @@ public struct NewsArticle: Equatable, Decodable {
         }
     }
     
-    let source: NewsSource
-    let author: String?
-    let title: String
-    let articleDescription: String?
-    let url: URL
-    let urlToImage: URL?
-    let publishedAt: Date
+    public let source: NewsSource
+    public let author: String?
+    public let title: String
+    public let articleDescription: String?
+    public let url: URL
+    public let urlToImage: URL?
+    public let publishedAt: Date
     
     enum CodingKeys: String, CodingKey {
         case source
