@@ -30,7 +30,7 @@ extension NewsAPITarget: APITargetType {
     var parameters: [String: String] {
         switch self {
         case let .sources(category, language, country):
-            return makeSourceParameters(category: category, language: language, country: country)
+            return makeCommomParameters(category: category, language: language, country: country)
         case let .topHeadlines(q, sources, category, language, country, pageSize, page):
             return makeTopHeadlinesParameters(q: q, sources: sources, category: category, language: language, country: country, pageSize: pageSize, page: page)
         }
@@ -45,7 +45,7 @@ extension NewsAPITarget: APITargetType {
 }
 
 private extension NewsAPITarget {
-    func makeSourceParameters(category: NewsCategory, language: NewsLanguage, country: NewsCountry) -> [String: String] {
+    func makeCommomParameters(category: NewsCategory, language: NewsLanguage, country: NewsCountry) -> [String: String] {
         var parameters = [String: String]()
         
         if case .all = category {} else {
@@ -74,18 +74,6 @@ private extension NewsAPITarget {
             parameters["sources"] = sources.joined(separator: ",")
         }
         
-        if case .all = category {} else {
-            parameters["category"] = category.rawValue
-        }
-        
-        if case .all = language {} else {
-            parameters["language"] = language.rawValue
-        }
-        
-        if case .all = country {} else {
-            parameters["country"] = country.rawValue
-        }
-        
         if let pageSize = pageSize {
             parameters["pageSize"] = String(pageSize)
         }
@@ -93,6 +81,9 @@ private extension NewsAPITarget {
         if let page = page {
             parameters["page"] = String(page)
         }
+        
+        let commomParameters = makeCommomParameters(category: category, language: language, country: country)
+        parameters.merge(commomParameters, uniquingKeysWith: { _, newValue in newValue })
         
         return parameters
     }
