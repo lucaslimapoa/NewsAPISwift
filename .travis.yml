@@ -23,6 +23,8 @@ jobs:
     - stage: build
       script: fastlane build
     - stage: lint
-      script: fastlane lint
+      script:
+        - fastlane lint
+        - fastlane lib_lint
     - stage: test
       script: fastlane tests

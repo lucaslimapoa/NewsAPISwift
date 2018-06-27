@@ -26,6 +26,11 @@ fastlane ios build
 fastlane ios lint
 ```
 
+### ios lib_lint
+```
+fastlane ios lib_lint
+```
+
 ### ios tests
 ```
 fastlane ios tests
