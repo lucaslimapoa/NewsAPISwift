@@ -43,7 +43,7 @@
 		4C19945520E328E40020970E = {
 			isa = PBXGroup;
 			children = (
-				4C3964A420E32A59003B6835 /* Example */,
+				4C3964A420E32A59003B6835 /* Source */,
 				4C19945F20E328E50020970E /* Products */,
 				C9B319809ACE5704FDD0B34C /* Pods */,
 				A96707CFEF14E3B4BED95460 /* Frameworks */,
@@ -58,7 +58,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		4C3964A420E32A59003B6835 /* Example */ = {
+		4C3964A420E32A59003B6835 /* Source */ = {
 			isa = PBXGroup;
 			children = (
 				4C3964AC20E32A59003B6835 /* ListArticlesViewController.swift */,
@@ -69,7 +69,7 @@
 				4C3964A820E32A59003B6835 /* LaunchScreen.storyboard */,
 				4C3964AE20E32A59003B6835 /* Info.plist */,
 			);
-			path = Example;
+			path = Source;
 			sourceTree = "<group>";
 		};
 		A96707CFEF14E3B4BED95460 /* Frameworks */ = {
@@ -339,7 +339,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = Example/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Source/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -357,7 +357,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = Example/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Source/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
