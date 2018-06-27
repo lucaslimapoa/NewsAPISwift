@@ -24,12 +24,42 @@ public class NewsAPI {
         self.decoder = sourceDecoder
     }
     
+    /**
+     Requests a list of sources matching the search criteria specified by the parameters.
+     If no parameters are specified, all sources will be returned.
+     
+     - parameters:
+        - category : Finds sources that display news of this category.
+        - language : Finds sources that display news in a specific language.
+        - country : Finds sources that display news in a specific country.
+        - completion: Closure containing the results
+     
+     - returns:
+     An URLSessionDataTask.
+     */
     @discardableResult
     public func getSources(category: NewsCategory = .all, language: NewsLanguage = .all, country: NewsCountry = .all, completion: @escaping NewsAPIRequestHandler<NewsSource>) -> URLSessionDataTask? {
         let targetAPI = NewsAPITarget.sources(category: category, language: language, country: country)
         return request(targetAPI, completion: completion)
     }
     
+    /**
+     Requests the top headlines matching the search criteria specified by the parameters.
+     If no parameters are specified, all top headlines will be returned.
+     
+     - parameters:
+         - q : Keywords or a phrase to search for.
+         - sources : A comma-seperated string of identifiers for the news sources or blogs you want headlines from.
+         - category : The category you want to get headlines for.
+         - language : The language you want to get headlines for.
+         - country : The country you want to get headlines for.
+         - pageSize: The number of results to return per page.
+         - page: Use this parameter to page through the results.
+         - completion: Closure containing the results
+     
+     - returns:
+     An URLSessionDataTask.
+     */
     @discardableResult
     public func getTopHeadlines(q: String? = nil,
                                 sources: [String]? = nil,
