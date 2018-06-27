@@ -4,14 +4,28 @@
 
 osx_image: xcode9.4
 language: swift
-cache: cocoapods
-podfile: Example/Podfile
-before_install:
- - gem install cocoapods # Since Travis is not always on latest version
-# - pod install --project-directory=Example
-script:
- - set -o pipefail && xcodebuild test -workspace Example/NewsAPISwift.xcworkspace -scheme NewsAPISwift-Example -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO -destination "platform=iOS Simulator,name=iPhone 7"
 
-#- pod lib lint
+cache:
+  - cocoapods
+  - bundler
+
+before_install:
+  - brew install swiftlint
+  - bundle install
+
+stages:
+  - build
+  - lint
+  - test
+
+jobs:
+  include:
+    - stage: build
+      script: fastlane build
+    - stage: lint
+      script: fastlane lint
+    - stage: test
+      script: fastlane tests
+
 after_success:
  - bash <(curl -s https://codecov.io/bash)
