@@ -1,5 +1,3 @@
-NewsAPISwift
-
 # NewsAPISwift
 
 [![CI Status](http://img.shields.io/travis/lucaslimapoa/NewsAPISwift.svg?style=flat)](https://travis-ci.org/lucaslimapoa/NewsAPISwift)
