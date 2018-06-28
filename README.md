@@ -1,3 +1,5 @@
+NewsAPISwift
+
 # NewsAPISwift
 
 [![CI Status](http://img.shields.io/travis/lucaslimapoa/NewsAPISwift.svg?style=flat)](https://travis-ci.org/lucaslimapoa/NewsAPISwift)
@@ -7,69 +9,105 @@
 [![codecov](https://codecov.io/gh/lucaslimapoa/NewsAPISwift/branch/master/graph/badge.svg)](https://codecov.io/gh/lucaslimapoa/NewsAPISwift)
 [![codebeat badge](https://codebeat.co/badges/bf6f15c8-5844-4d0b-85ff-0e50d1c51176)](https://codebeat.co/projects/github-com-lucaslimapoa-newsapiswift-master)
 
-NewsAPISwift is a Swift wrapper around [NewsAPI.org](http://newsapi.org), a service that provides articles and headlines from more than 70 sources.
-
-*NOTE: This library and its author are not endorsed by or affiliated with NewsApi.org.*
+NewsAPISwift is a Swift client for [News API V2](http://newsapi.org), a service that provides breaking news headlines, and search for articles from over 30,000 news sources and blogs.
 
 ## Usage
 
-NewsAPI offers two endpoints to which sources and articles can be requested. 
+NewsAPISwift offers two functions to which sources and top headlines can be requested.
 
 ### Sources
-The first endpoint is used for listing all available sources and three parameters can be used to sort the results.
+The first functions is used for listing all available sources indexed by the service.
+Three parameters can be passed in order to filter results.
 
 | Parameter | Description |
 | --------- | ----------- |
-| **Category**  | The category you would like to get sources for. The possible values are: `business`, `entertainment`, `gaming`, `general`, `music`, `politics`, `scienceAndNature`, `sport` and `technology`. |
-| **Language**  | The language you would like to get sources for. The possible values are: `english`, `deutsch` and `french`. |
-| **Country**   | The country you would like to get sources for. The possible values are: `australia`, `germany`, `unitedKingdom`, `india`, `italy` and `unitedStates`.
-
+| **Category**  | The category you would like to get sources for. The possible values are: `business`, `entertainment`, `general`, `health`, `science`, `sports`, `technology`. *Default: all categories.*|
+| **Language**  | The language you would like to get sources for. The possible values are: `ar`, `de`, `en`, `es`, `fr`, `he`, `it`, `nl`, `no`, `pt`, `ru`, `se`, `ud`, `zh`. *Default: all languages.*|
+| **Country**   | The country you would like to get sources for. To get the full list of supported countries, please head to the official [documentation](https://newsapi.org/docs/endpoints/sources). *Default: all countries.*
 
 #### Example
 
 ```swift
 import NewsAPISwift
 
-let newsAPI = NewsAPI(key: "YourKeyHere")
+let newsAPI = NewsAPI(apiKey: "YourKeyHere")
 
-newsAPI.getSources(category: Category.gaming, language: Language.english, country: Country.unitedStates) { result in
+newsAPI.getSources(category: .technology, language: .en, country: .us) { result in
     switch result {
     case .success(let sources):
-        // Handle success case
-    case .error(let error):
-        // Handle error case
+        // Do something with returned sources
+    case .failure(let error):
+        // Handle error
     }
 }
 ```
 
-### Articles
-The second endpoint is used for listing articles and headlines from a given Source. One parameter can be used for sorting the results.
+### Top Headlines
+The second function is used for listing top headlines. It is possible to request headlines for a specific country, a single or multiple sources, as well as keywords.
 
-| Parameter | Description |
-| --------- | ----------- |
-| **SourceId** | This is the id of the source you want to get articles from. This data is found in `NewsAPISource.id`. |
-| **SortBy**  | The sort type you would like to get the articles. The possible values are: `top`, `latest` and `popular`. |
+To get a full list of supported parameters, check the official [documentation](https://newsapi.org/docs/endpoints/sources) for the service.
 
 #### Example
 
+Top Headlines about the weather:
 ```swift
 import NewsAPISwift
 
-let newsAPI = NewsAPI(key: "YourKeyHere")
+let newsAPI = NewsAPI(apiKey: "YourKeyHere")
 
-newsAPI.getArticles(sourceId: "SourceId", sortBy: SortBy.popular) { result in
-switch result {
-    case .success(let articles):
-        // Handle success case
-    case .error(let error):
-        // Handle error case
+newsAPI.getTopHeadlines(q: "weather") { result in
+    switch result {
+    case .success(let headlines):
+        // Do something with returned headlines
+    case .failure(let error):
+        // Handle error
     }
 }
+```
+
+Top Headlines from BBC News:
+```swift
+newsAPI.getTopHeadlines(sources: ["bbc-news"]) { result in
+    switch result {
+    case .success(let headlines):
+        // Do something with returned headlines
+    case .failure(let error):
+        // Handle error
+    }
+}
+
+```
+
+Top Headlines from the US about technology:
+```swift        
+newsAPI.getTopHeadlines(category: .technology, country: .us) { result in
+    switch result {
+    case .success(let headlines):
+        // Do something with returned headlines
+    case .failure(let error):
+        // Handle error
+    }
+}
+
+```
+
+It is also possible to limit the number of articles returned by passing the *pageSize* parameter. Since there could be more results, pagination is also possible.
+
+```swift
+newsAPI.getTopHeadlines(pageSize: 20, page: 1) { result in
+    switch result {
+    case .success(let headlines):
+        // Do something with returned headlines
+    case .failure(let error):
+        // Handle error
+    }
+}
+
 ```
 
 ## Example Application
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+To run the example project, clone the repo, and run `pod install` from the Example directory first. Then, open **Example.xcworkspace**.
 
 ## Installation
 
@@ -83,3 +121,5 @@ pod "NewsAPISwift"
 ## License
 
 NewsAPISwift is available under the MIT license. See the LICENSE file for more info.
+
+*NOTE: This library and its author are not endorsed by or affiliated with newsapi.org.*
