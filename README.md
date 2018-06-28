@@ -107,16 +107,57 @@ newsAPI.getTopHeadlines(pageSize: 20, page: 1) { result in
 
 ## Example Application
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first. Then, open **Example.xcworkspace**.
+To run the example project, clone the repo, and run `pod install` from the Example directory first. Then, open **Example.xcworkspace** and run the project.
 
 ## Installation
 
-NewsAPISwift is available through [CocoaPods](http://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+#### CocoaPods
+CocoaPods is a dependency manager for Cocoa projects. You can install it with the following command:
+
+```
+$ gem install cocoapods
+```
+
+To integrate NewsAPISwift into your Xcode project using CocoaPods, specify it in your Podfile:
 
 ```ruby
-pod "NewsAPISwift"
+platform :ios, '8.0'
+use_frameworks!
+
+target '<Your Target Name>' do
+    pod 'NewsAPISwift'
+end
 ```
+
+Then, run the following command:
+
+```
+$ pod install
+````
+
+#### Carthage
+Carthage is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks.
+
+You can install Carthage with Homebrew using the following command:
+
+```
+$ brew update
+$ brew install carthage
+```
+
+To integrate NewsAPISwift into your Xcode project using Carthage, specify it in your Cartfile:
+
+```
+github "lucaslimapoa/NewsAPISwift"
+```
+
+Run the following command to build the framework:
+
+```
+carthage update
+```
+
+Then, drag the built NewsAPISwift.framework into your Xcode project.
 
 ## License
 
