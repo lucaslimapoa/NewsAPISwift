@@ -1,0 +1,35 @@
+default_platform(:ios)
+
+platform :ios do
+  before_all do |lane|
+      lint_lanes = [:lint, :lib_lint]
+      if not lint_lanes.include?(lane)
+        cocoapods(try_repo_update_on_error: true)
+      end
+  end
+
+  lane :build do
+    xcodebuild(
+      workspace: "NewsAPISwift.xcworkspace",
+      scheme: "NewsAPISwift"
+    )
+  end
+
+  lane :lint do
+    swiftlint(
+      reporter: "html",
+      output_file: "swiftlint.html"
+    )
+  end
+
+  lane :lib_lint do
+    pod_lib_lint(allow_warnings: true)
+  end
+
+  lane :tests do
+    run_tests(
+      workspace: "NewsAPISwift.xcworkspace",
+      scheme: "NewsAPISwift"
+    )
+  end
+end
