@@ -3,6 +3,7 @@ NewsAPISwift
 # NewsAPISwift
 
 [![CI Status](http://img.shields.io/travis/lucaslimapoa/NewsAPISwift.svg?style=flat)](https://travis-ci.org/lucaslimapoa/NewsAPISwift)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Version](https://img.shields.io/cocoapods/v/NewsAPISwift.svg?style=flat)](http://cocoapods.org/pods/NewsAPISwift)
 [![License](https://img.shields.io/cocoapods/l/NewsAPISwift.svg?style=flat)](http://cocoapods.org/pods/NewsAPISwift)
 [![Platform](https://img.shields.io/cocoapods/p/NewsAPISwift.svg?style=flat)](http://cocoapods.org/pods/NewsAPISwift)
